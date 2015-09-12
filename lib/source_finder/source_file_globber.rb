@@ -28,7 +28,7 @@ module SourceFinder
       if @source_files_exclude_glob
         @globber.glob(@source_files_exclude_glob)
       else
-        @exclude_files
+        (@exclude_files || [])
       end
     end
 
