@@ -38,16 +38,21 @@ module SourceFinder
         'yml,sh,json'
     end
 
-    def source_files_glob(extra_source_files = extra_files,
-                          dirs = source_dirs,
-                          extensions = source_file_extensions)
-      @source_files_glob ||
-        "{#{extra_source_files.join(',')}," \
-        "{*,.*}.{#{extensions}}," +
-          File.join("{#{dirs.join(',')}}",
-                    '**',
-                    "{*,.*}.{#{extensions}}") +
-          '}'
+    def source_files_glob
+      @source_files_glob || make_source_files_glob(extra_files,
+                                                   source_dirs,
+                                                   source_file_extensions)
+    end
+
+    def make_source_files_glob(extra_source_files,
+                               dirs,
+                               extensions)
+      "{#{extra_source_files.join(',')}," \
+      "{*,.*}.{#{extensions}}," +
+        File.join("{#{dirs.join(',')}}",
+                  '**',
+                  "{*,.*}.{#{extensions}}") +
+        '}'
     end
 
     def source_files_exclude_glob
@@ -60,7 +65,7 @@ module SourceFinder
     end
 
     def ruby_files_glob
-      source_files_glob(extra_ruby_files, ruby_dirs, ruby_file_extensions)
+      make_source_files_glob(extra_ruby_files, ruby_dirs, ruby_file_extensions)
     end
 
     def ruby_files
