@@ -1,3 +1,5 @@
+require_relative 'source_file_globber'
+
 module SourceFinder
   # Brings in command-line options to configure SourceFinder--usable
   # with the ruby OptionParser class, brought in with 'require
