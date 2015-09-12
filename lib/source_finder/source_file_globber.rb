@@ -5,7 +5,8 @@ module SourceFinder
     # See README.md for documentation on these configuration parameters.
 
     attr_accessor :ruby_dirs, :source_dirs, :extra_files, :extra_ruby_files,
-                  :ruby_file_extensions, :source_file_extensions, :exclude_files
+                  :ruby_file_extensions, :source_file_extensions,
+                  :exclude_files, :source_files_glob, :source_files_exclude_glob
 
     def ruby_dirs
       @ruby_dirs ||= %w(src app lib test spec feature)
@@ -24,7 +25,11 @@ module SourceFinder
     end
 
     def exclude_files
-      @exclude_files ||= []
+      if @source_files_exclude_glob
+        @globber.glob(@source_files_exclude_glob)
+      else
+        @exclude_files
+      end
     end
 
     def source_file_extensions
@@ -36,16 +41,18 @@ module SourceFinder
     def source_files_glob(extra_source_files = extra_files,
                           dirs = source_dirs,
                           extensions = source_file_extensions)
-      "{#{extra_source_files.join(',')}," \
+      @source_files_glob ||
+        "{#{extra_source_files.join(',')}," \
         "{*,.*}.{#{extensions}}," +
-        File.join("{#{dirs.join(',')}}",
-                  '**',
-                  "{*,.*}.{#{extensions}}") +
-        '}'
+          File.join("{#{dirs.join(',')}}",
+                    '**',
+                    "{*,.*}.{#{extensions}}") +
+          '}'
     end
 
     def source_files_exclude_glob
-      "{#{exclude_files.join(', ')}}"
+      @source_files_exclude_glob ||
+        "{#{exclude_files.join(', ')}}"
     end
 
     def ruby_file_extensions
@@ -57,10 +64,14 @@ module SourceFinder
     end
 
     def ruby_files
-      (@globber.glob(ruby_files_glob) - exclude_files).join(' ')
+      @globber.glob(ruby_files_glob) - exclude_files
     end
 
-    def initialize(globber: fail)
+    def source_files
+      @globber.glob(source_files_glob) - exclude_files
+    end
+
+    def initialize(globber: Dir)
       @globber = globber
     end
   end
