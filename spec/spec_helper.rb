@@ -5,7 +5,6 @@ SimpleCov.start do
   add_filter 'vendor'
 end
 SimpleCov.refuse_coverage_drop
-require 'yourmodulehere'
 
 RSpec.configure do |config|
   config.run_all_when_everything_filtered = true

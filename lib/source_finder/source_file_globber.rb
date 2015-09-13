@@ -5,8 +5,13 @@ module SourceFinder
     # See README.md for documentation on these configuration parameters.
 
     attr_accessor :ruby_dirs, :source_dirs, :extra_files, :extra_ruby_files,
-                  :ruby_file_extensions, :source_file_extensions,
-                  :exclude_files, :source_files_glob, :source_files_exclude_glob
+                  :ruby_file_extensions_arr, :source_file_extensions_arr,
+                  :exclude_files_arr, :source_files_glob,
+                  :source_files_exclude_glob
+
+    def initialize(globber: Dir)
+      @globber = globber
+    end
 
     def ruby_dirs
       @ruby_dirs ||= %w(src app lib test spec feature)
@@ -16,6 +21,7 @@ module SourceFinder
       @source_dirs ||= ruby_dirs.clone
     end
 
+    # XXX: Should be extra_source_files
     def extra_files
       @extra_files ||= extra_ruby_files.clone.concat(%w(Dockerfile))
     end
@@ -24,7 +30,7 @@ module SourceFinder
       @extra_ruby_files ||= %w(Rakefile)
     end
 
-    def exclude_files
+    def exclude_files_arr
       if @source_files_exclude_glob
         @globber.glob(@source_files_exclude_glob)
       else
@@ -32,26 +38,40 @@ module SourceFinder
       end
     end
 
-    def source_file_extensions
-      @source_file_extensions ||=
-        "#{ruby_file_extensions},swift,cpp,c,java,py,clj,cljs,scala,js," \
-        'yml,sh,json'
+    def source_file_extensions_arr
+      @source_file_extensions_arr ||= ruby_file_extensions_arr +
+                                      %w(swift cpp c java py clj cljs scala js
+                                         yml sh json)
+    end
+
+    def source_file_extensions_glob
+      @source_file_extensions_glob ||= source_file_extensions_arr.join(',')
+    end
+
+    def source_and_doc_file_extensions_arr
+      doc_file_extensions_arr + source_file_extensions_arr
     end
 
     def source_files_glob
       @source_files_glob || make_source_files_glob(extra_files,
                                                    source_dirs,
-                                                   source_file_extensions)
+                                                   source_file_extensions_glob)
     end
 
-    def make_source_files_glob(extra_source_files,
-                               dirs,
-                               extensions)
-      "{#{extra_source_files.join(',')}," \
-      "{*,.*}.{#{extensions}}," +
-        File.join("{#{dirs.join(',')}}",
+    def source_and_doc_files_glob
+      make_source_files_glob(extra_files,
+                             source_dirs,
+                             source_and_doc_file_extensions)
+    end
+
+    def make_source_files_glob(extra_source_files_arr,
+                               dirs_arr,
+                               extensions_glob)
+      "{#{extra_source_files_arr.join(',')}," \
+      "{*,.*}.{#{extensions_glob}}," +
+        File.join("{#{dirs_arr.join(',')}}",
                   '**',
-                  "{*,.*}.{#{extensions}}") +
+                  "{*,.*}.{#{extensions_glob}}") +
         '}'
     end
 
@@ -60,8 +80,12 @@ module SourceFinder
         "{#{exclude_files.join(', ')}}"
     end
 
-    def ruby_file_extensions
-      @ruby_file_extensions ||= 'rb,rake,gemspec'
+    def ruby_file_extensions_arr
+      @ruby_file_extensions_arr || %w(rb rake gemspec)
+    end
+
+    def ruby_file_extensions_glob
+      @ruby_file_extensions ||= ruby_file_extensions_arr.join(',')
     end
 
     def ruby_files_glob
@@ -74,10 +98,6 @@ module SourceFinder
 
     def source_files
       @globber.glob(source_files_glob) - exclude_files
-    end
-
-    def initialize(globber: Dir)
-      @globber = globber
     end
   end
 end
