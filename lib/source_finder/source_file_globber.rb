@@ -4,37 +4,37 @@ module SourceFinder
   class SourceFileGlobber
     # See README.md for documentation on these configuration parameters.
 
-    attr_accessor :ruby_dirs, :source_dirs, :extra_files, :extra_ruby_files,
-                  :ruby_file_extensions_arr, :source_file_extensions_arr,
-                  :exclude_files_arr, :source_files_glob,
-                  :source_files_exclude_glob
+    attr_accessor :ruby_dirs_arr, :source_dirs_arr, :extra_source_files_arr,
+                  :extra_ruby_files_arr, :ruby_file_extensions_arr,
+                  :source_file_extensions_arr, :exclude_files_arr,
+                  :source_files_glob, :source_files_exclude_glob
 
     def initialize(globber: Dir)
       @globber = globber
     end
 
-    def ruby_dirs
-      @ruby_dirs ||= %w(src app lib test spec feature)
+    def ruby_dirs_arr
+      @ruby_dirs_arr ||= %w(src app lib test spec feature)
     end
 
-    def source_dirs
-      @source_dirs ||= ruby_dirs.clone
+    def source_dirs_arr
+      @source_dirs_arr ||= ruby_dirs_arr.clone
     end
 
-    # XXX: Should be extra_source_files
-    def extra_files
-      @extra_files ||= extra_ruby_files.clone.concat(%w(Dockerfile))
+    def extra_source_files_arr
+      @extra_source_files_arr ||=
+        extra_ruby_files_arr.clone.concat(%w(Dockerfile))
     end
 
-    def extra_ruby_files
-      @extra_ruby_files ||= %w(Rakefile)
+    def extra_ruby_files_arr
+      @extra_ruby_files_arr ||= %w(Rakefile)
     end
 
     def exclude_files_arr
       if @source_files_exclude_glob
         @globber.glob(@source_files_exclude_glob)
       else
-        (@exclude_files || [])
+        (@exclude_files_arr || [])
       end
     end
 
@@ -42,6 +42,10 @@ module SourceFinder
       @source_file_extensions_arr ||= ruby_file_extensions_arr +
                                       %w(swift cpp c java py clj cljs scala js
                                          yml sh json)
+    end
+
+    def doc_file_extensions_arr
+      @doc_file_extensions_arr ||= %w(md)
     end
 
     def source_file_extensions_glob
@@ -52,16 +56,21 @@ module SourceFinder
       doc_file_extensions_arr + source_file_extensions_arr
     end
 
+    def source_and_doc_file_extensions_glob
+      @source_and_doc_file_extensions_glob ||=
+        source_and_doc_file_extensions_arr.join(',')
+    end
+
     def source_files_glob
-      @source_files_glob || make_source_files_glob(extra_files,
-                                                   source_dirs,
+      @source_files_glob || make_source_files_glob(extra_source_files_arr,
+                                                   source_dirs_arr,
                                                    source_file_extensions_glob)
     end
 
     def source_and_doc_files_glob
-      make_source_files_glob(extra_files,
-                             source_dirs,
-                             source_and_doc_file_extensions)
+      make_source_files_glob(extra_source_files_arr,
+                             source_dirs_arr,
+                             source_and_doc_file_extensions_glob)
     end
 
     def make_source_files_glob(extra_source_files_arr,
@@ -76,8 +85,7 @@ module SourceFinder
     end
 
     def source_files_exclude_glob
-      @source_files_exclude_glob ||
-        "{#{exclude_files.join(', ')}}"
+      @source_files_exclude_glob || "{#{exclude_files_arr.join(', ')}}"
     end
 
     def ruby_file_extensions_arr
@@ -85,19 +93,21 @@ module SourceFinder
     end
 
     def ruby_file_extensions_glob
-      @ruby_file_extensions ||= ruby_file_extensions_arr.join(',')
+      @ruby_file_extensions_glob ||= ruby_file_extensions_arr.join(',')
     end
 
     def ruby_files_glob
-      make_source_files_glob(extra_ruby_files, ruby_dirs, ruby_file_extensions)
+      make_source_files_glob(extra_ruby_files_arr,
+                             ruby_dirs_arr,
+                             ruby_file_extensions_glob)
     end
 
-    def ruby_files
-      @globber.glob(ruby_files_glob) - exclude_files
+    def ruby_files_arr
+      @globber.glob(ruby_files_glob) - exclude_files_arr
     end
 
-    def source_files
-      @globber.glob(source_files_glob) - exclude_files
+    def source_files_arr
+      @globber.glob(source_files_glob) - exclude_files_arr
     end
   end
 end
