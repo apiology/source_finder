@@ -7,7 +7,8 @@ module SourceFinder
     attr_accessor :ruby_dirs_arr, :source_dirs_arr, :extra_source_files_arr,
                   :extra_ruby_files_arr, :ruby_file_extensions_arr,
                   :source_file_extensions_arr, :exclude_files_arr,
-                  :source_files_glob, :source_files_exclude_glob
+                  :source_files_glob, :source_files_exclude_glob,
+                  :source_file_extensions_glob
 
     def initialize(globber: Dir)
       @globber = globber
