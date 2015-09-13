@@ -14,7 +14,7 @@ module SourceFinder
     end
 
     def ruby_dirs_arr
-      @ruby_dirs_arr ||= %w(src app lib test spec feature)
+      @ruby_dirs_arr ||= %w(src app config db lib test spec feature)
     end
 
     def source_dirs_arr
