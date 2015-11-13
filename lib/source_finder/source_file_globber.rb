@@ -103,12 +103,20 @@ module SourceFinder
                              ruby_file_extensions_glob)
     end
 
+    def emacs_lockfile?(filename)
+      File.basename(filename) =~ /^\.#/
+    end
+
+    def exclude_garbage(files_arr)
+      files_arr.reject { |filename| emacs_lockfile?(filename) }
+    end
+
     def ruby_files_arr
-      @globber.glob(ruby_files_glob) - exclude_files_arr
+      exclude_garbage(@globber.glob(ruby_files_glob) - exclude_files_arr)
     end
 
     def source_files_arr
-      @globber.glob(source_files_glob) - exclude_files_arr
+      exclude_garbage(@globber.glob(source_files_glob) - exclude_files_arr)
     end
   end
 end

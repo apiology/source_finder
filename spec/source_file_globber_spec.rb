@@ -101,6 +101,8 @@ describe SourceFinder::SourceFileGlobber do
         .and_return(expected_ruby_files)
       expect(expected_ruby_files).to(receive(:-).with([]))
         .and_return(expected_modified_ruby_files)
+      expect(expected_modified_ruby_files).to(receive(:reject))
+        .and_return(expected_modified_ruby_files)
     end
     subject { source_file_globber.ruby_files_arr }
     it { is_expected.to eq(expected_modified_ruby_files) }
@@ -117,6 +119,8 @@ describe SourceFinder::SourceFileGlobber do
               'js,yml,sh,json}}')
         .and_return(expected_source_files)
       expect(expected_source_files).to(receive(:-).with([]))
+        .and_return(expected_modified_source_files)
+      expect(expected_modified_source_files).to(receive(:reject))
         .and_return(expected_modified_source_files)
     end
     subject { source_file_globber.source_files_arr }
