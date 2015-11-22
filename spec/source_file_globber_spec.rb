@@ -16,9 +16,7 @@ describe SourceFinder::SourceFileGlobber do
     end
     let_double :ruby_dirs
     context 'when configured' do
-      before do
-        source_file_globber.ruby_dirs_arr = ruby_dirs
-      end
+      before { source_file_globber.ruby_dirs_arr = ruby_dirs }
       subject { source_file_globber.ruby_dirs_arr }
       it { is_expected.to eq(ruby_dirs) }
     end
@@ -47,9 +45,7 @@ describe SourceFinder::SourceFileGlobber do
 
   describe '#source_files_exclude_glob' do
     context 'with configured arr' do
-      before do
-        source_file_globber.exclude_files_arr = ['foo.txt', 'bar.txt']
-      end
+      before { source_file_globber.exclude_files_arr = ['foo.txt', 'bar.txt'] }
       subject { source_file_globber.source_files_exclude_glob }
       it { is_expected.to eq('{foo.txt, bar.txt}') }
     end
@@ -105,38 +101,31 @@ describe SourceFinder::SourceFileGlobber do
   end
 
   describe '#ruby_files_arr' do
-    let_double :expected_ruby_files, :expected_modified_ruby_files
     before do
       expect(globber).to receive(:glob)
         .with('{Rakefile,{*,.*}.{rb,rake,gemspec},' \
               '{src,app,config,db,lib,test,spec,feature}/**/{*,.*}.' \
               '{rb,rake,gemspec}}')
-        .and_return(expected_ruby_files)
-      expect(expected_ruby_files).to(receive(:-).with([]))
-        .and_return(expected_modified_ruby_files)
-      expect(expected_modified_ruby_files).to(receive(:reject))
-        .and_return(expected_modified_ruby_files)
+        .and_return(['bing/baz.rb'])
     end
     subject { source_file_globber.ruby_files_arr }
-    it { is_expected.to eq(expected_modified_ruby_files) }
+    it { is_expected.to eq(['bing/baz.rb']) }
   end
 
+  SOURCE_FILE_GLOB =
+    '{Rakefile,Dockerfile,{*,.*}.' \
+    '{rb,rake,gemspec,swift,cpp,c,java,py,clj,cljs,scala,js,' \
+    'yml,sh,json},{src,app,config,db,lib,test,spec,feature}/' \
+    '**/{*,.*}.{rb,rake,gemspec,swift,cpp,c,java,py,clj,cljs,scala,' \
+    'js,yml,sh,json}}'
+
   describe '#source_files_arr' do
-    let_double :expected_source_files, :expected_modified_source_files
     before do
       expect(globber).to(receive(:glob))
-        .with('{Rakefile,Dockerfile,{*,.*}.' \
-              '{rb,rake,gemspec,swift,cpp,c,java,py,clj,cljs,scala,js,' \
-              'yml,sh,json},{src,app,config,db,lib,test,spec,feature}/' \
-              '**/{*,.*}.{rb,rake,gemspec,swift,cpp,c,java,py,clj,cljs,scala,' \
-              'js,yml,sh,json}}')
-        .and_return(expected_source_files)
-      expect(expected_source_files).to(receive(:-).with([]))
-        .and_return(expected_modified_source_files)
-      expect(expected_modified_source_files).to(receive(:reject))
-        .and_return(expected_modified_source_files)
+        .with(SOURCE_FILE_GLOB)
+        .and_return(['foo.md', 'bar.js', 'bing/baz.rb'])
     end
     subject { source_file_globber.source_files_arr }
-    it { is_expected.to eq(expected_modified_source_files) }
+    it { is_expected.to eq(['foo.md', 'bar.js', 'bing/baz.rb']) }
   end
 end
