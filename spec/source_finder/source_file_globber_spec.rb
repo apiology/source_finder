@@ -6,7 +6,7 @@ describe SourceFinder::SourceFileGlobber do
   let_double :globber
 
   subject(:source_file_globber) do
-    SourceFinder::SourceFileGlobber.new(globber: globber)
+    described_class.new(globber: globber)
   end
 
   describe '#ruby_dirs_arr' do
@@ -84,12 +84,12 @@ describe SourceFinder::SourceFileGlobber do
         source_file_globber.extra_ruby_files_arr = ['mumble.rb']
         source_file_globber.extra_source_files_arr =
           ['AUTOEXEC.BAT', 'CONFIG.SYS'] +
-            source_file_globber.extra_ruby_files_arr
+          source_file_globber.extra_ruby_files_arr
         source_file_globber.ruby_file_extensions_arr =
           ['.RB', '.RAKE']
         source_file_globber.source_file_extensions_arr =
           source_file_globber.ruby_file_extensions_arr +
-            ['JAVA', 'C#']
+          ['JAVA', 'C#']
         source_file_globber.source_dirs_arr = %w(dir1 dir2)
       end
       expected_glob =

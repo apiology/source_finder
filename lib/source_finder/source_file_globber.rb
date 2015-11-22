@@ -73,8 +73,8 @@ module SourceFinder
     end
 
     def make_files_glob(extra_source_files_arr,
-                               dirs_arr,
-                               extensions_glob)
+                        dirs_arr,
+                        extensions_glob)
       "{#{extra_source_files_arr.join(',')}," \
       "{*,.*}.{#{extensions_glob}}," +
         File.join("{#{dirs_arr.join(',')}}",
