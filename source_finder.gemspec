@@ -14,10 +14,10 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/apiology/source_finder'
   spec.license       = 'MIT'
 
-  spec.files         = Dir["CODE_OF_CONDUCT.md", "LICENSE.txt", "README.md",
-                           "{lib}/source_finder.rb",
-                           "{lib}/source_finder/**/*.rb",
-                           "source_finder.gemspec"]
+  spec.files         = Dir['CODE_OF_CONDUCT.md', 'LICENSE.txt', 'README.md',
+                           '{lib}/source_finder.rb',
+                           '{lib}/source_finder/**/*.rb',
+                           'source_finder.gemspec']
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
