@@ -46,12 +46,25 @@ describe SourceFinder::SourceFileGlobber do
   end
 
   describe '#source_files_exclude_glob' do
-    context 'with configured' do
+    context 'with configured arr' do
       before do
         source_file_globber.exclude_files_arr = ['foo.txt', 'bar.txt']
       end
       subject { source_file_globber.source_files_exclude_glob }
       it { is_expected.to eq('{foo.txt, bar.txt}') }
+    end
+  end
+
+  describe '#exclude_files_arr' do
+    let_double :source_arr
+    context 'with configured glob' do
+      before do
+        source_file_globber.source_files_exclude_glob = '{*.txt}'
+        expect(globber).to(receive(:glob)).with('{*.txt}')
+          .and_return(source_arr)
+      end
+      subject { source_file_globber.exclude_files_arr }
+      it { is_expected.to eq(source_arr) }
     end
   end
 
