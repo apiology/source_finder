@@ -3,7 +3,6 @@ module SourceFinder
   # inclusion and exclusion glob
   class SourceFileGlobber
     # See README.md for documentation on these configuration parameters.
-
     attr_accessor :ruby_dirs_arr, :source_dirs_arr, :extra_source_files_arr,
                   :extra_ruby_files_arr, :ruby_file_extensions_arr,
                   :source_file_extensions_arr, :exclude_files_arr,
@@ -40,9 +39,9 @@ module SourceFinder
     end
 
     def source_file_extensions_arr
-      @source_file_extensions_arr ||= ruby_file_extensions_arr +
-                                      %w(swift cpp c java py clj cljs scala js
-                                         yml sh json)
+      @source_file_extensions_arr ||=
+        ruby_file_extensions_arr +
+        %w(swift cpp c java py clj cljs scala js yml sh json)
     end
 
     def doc_file_extensions_arr
@@ -63,26 +62,24 @@ module SourceFinder
     end
 
     def source_files_glob
-      @source_files_glob || make_source_files_glob(extra_source_files_arr,
-                                                   source_dirs_arr,
-                                                   source_file_extensions_glob)
+      @source_files_glob ||
+        make_files_glob(extra_source_files_arr, source_dirs_arr,
+                        source_file_extensions_glob)
     end
 
     def source_and_doc_files_glob
-      make_source_files_glob(extra_source_files_arr,
-                             source_dirs_arr,
-                             source_and_doc_file_extensions_glob)
+      make_files_glob(extra_source_files_arr, source_dirs_arr,
+                      source_and_doc_file_extensions_glob)
     end
 
-    def make_source_files_glob(extra_source_files_arr,
+    def make_files_glob(extra_source_files_arr,
                                dirs_arr,
                                extensions_glob)
       "{#{extra_source_files_arr.join(',')}," \
       "{*,.*}.{#{extensions_glob}}," +
         File.join("{#{dirs_arr.join(',')}}",
                   '**',
-                  "{*,.*}.{#{extensions_glob}}") +
-        '}'
+                  "{*,.*}.{#{extensions_glob}}") + '}'
     end
 
     def source_files_exclude_glob
@@ -98,9 +95,8 @@ module SourceFinder
     end
 
     def ruby_files_glob
-      make_source_files_glob(extra_ruby_files_arr,
-                             ruby_dirs_arr,
-                             ruby_file_extensions_glob)
+      make_files_glob(extra_ruby_files_arr, ruby_dirs_arr,
+                      ruby_file_extensions_glob)
     end
 
     def emacs_lockfile?(filename)
