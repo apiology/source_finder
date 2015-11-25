@@ -30,11 +30,27 @@ module SourceFinder
       @extra_ruby_files_arr ||= %w(Rakefile)
     end
 
+    def default_source_files_exclude_glob
+      '**/vendor/**'
+    end
+
     def exclude_files_arr
       if @source_files_exclude_glob
         @globber.glob(@source_files_exclude_glob)
+      elsif @exclude_files_arr
+        @exclude_files_arr
       else
-        (@exclude_files_arr || [])
+        @globber.glob(default_source_files_exclude_glob)
+      end
+    end
+
+    def source_files_exclude_glob
+      if @source_files_exclude_glob
+        @source_files_exclude_glob
+      elsif @exclude_files_arr
+        "{#{exclude_files_arr.join(', ')}}"
+      else
+        default_source_files_exclude_glob
       end
     end
 
@@ -80,10 +96,6 @@ module SourceFinder
         File.join("{#{dirs_arr.join(',')}}",
                   '**',
                   "{*,.*}.{#{extensions_glob}}") + '}'
-    end
-
-    def source_files_exclude_glob
-      @source_files_exclude_glob || "{#{exclude_files_arr.join(', ')}}"
     end
 
     def ruby_file_extensions_arr
