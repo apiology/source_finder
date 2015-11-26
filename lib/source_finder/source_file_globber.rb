@@ -93,8 +93,7 @@ module SourceFinder
                         extensions_glob)
       "{#{extra_source_files_arr.join(',')}," \
       "{*,.*}.{#{extensions_glob}}," +
-        File.join("{#{dirs_arr.join(',')}}",
-                  '**',
+        File.join("{#{dirs_arr.join(',')}}", '**',
                   "{*,.*}.{#{extensions_glob}}") + '}'
     end
 
