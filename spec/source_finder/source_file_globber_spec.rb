@@ -49,6 +49,15 @@ describe SourceFinder::SourceFileGlobber do
       subject { source_file_globber.source_files_exclude_glob }
       it { is_expected.to eq('{foo.txt, bar.txt}') }
     end
+    context 'with configured glob' do
+      before { source_file_globber.source_files_exclude_glob = '**/mumble/**' }
+      subject { source_file_globber.source_files_exclude_glob }
+      it { is_expected.to eq('**/mumble/**') }
+    end
+    context 'with nothing configured' do
+      subject { source_file_globber.source_files_exclude_glob }
+      it { is_expected.to eq('**/vendor/**') }
+    end
   end
 
   describe '#exclude_files_arr' do
