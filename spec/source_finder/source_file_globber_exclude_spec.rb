@@ -13,7 +13,7 @@ describe SourceFinder::SourceFileGlobber do
     context 'with configured arr' do
       before { source_file_globber.exclude_files_arr = ['foo.txt', 'bar.txt'] }
       subject { source_file_globber.source_files_exclude_glob }
-      it { is_expected.to eq('{foo.txt, bar.txt}') }
+      it { is_expected.to eq('{foo.txt,bar.txt}') }
     end
     context 'with configured glob' do
       before { source_file_globber.source_files_exclude_glob = '**/mumble/**' }
