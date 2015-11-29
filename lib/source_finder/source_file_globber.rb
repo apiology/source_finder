@@ -48,7 +48,7 @@ module SourceFinder
       if @source_files_exclude_glob
         @source_files_exclude_glob
       elsif @exclude_files_arr
-        "{#{exclude_files_arr.join(', ')}}"
+        "{#{exclude_files_arr.join(',')}}"
       else
         default_source_files_exclude_glob
       end
