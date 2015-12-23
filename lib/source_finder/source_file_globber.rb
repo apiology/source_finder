@@ -28,7 +28,7 @@ module SourceFinder
     end
 
     def js_dirs_arr
-      @js_dirs_arr ||= %w(src www lib)
+      @js_dirs_arr ||= %w(app src www)
     end
 
     def python_dirs_arr
@@ -106,11 +106,16 @@ module SourceFinder
     def make_files_glob(extra_source_files_arr,
                         dirs_arr,
                         extensions_glob)
-      "{#{extra_source_files_arr.join(',')}," \
-      "{*,.*}.{#{extensions_glob}}," +
+      glob = '{'
+      if extra_source_files_arr.size > 0
+        glob += "#{extra_source_files_arr.join(',')},"
+      end
+      glob +=
+        "{*,.*}.{#{extensions_glob}}," +
         File.join("{#{dirs_arr.join(',')}}",
                   '**',
                   "{*,.*}.{#{extensions_glob}}") + '}'
+      glob
     end
 
     def source_files_exclude_glob

@@ -32,6 +32,27 @@ describe SourceFinder::SourceFileGlobber do
     end
   end
 
+  describe '#js_dirs_arr' do
+    context 'when unconfigured' do
+      subject { source_file_globber.js_dirs_arr }
+      it { is_expected.to eq(%w(app src www)) }
+    end
+    let_double :js_dirs
+    context 'when configured' do
+      before { source_file_globber.js_dirs_arr = js_dirs }
+      subject { source_file_globber.js_dirs_arr }
+      it { is_expected.to eq(js_dirs) }
+    end
+  end
+
+  describe '#js_files_glob' do
+    context 'with everything unconfigured' do
+      expected_glob = '{{*,.*}.{js},{app,src,www}/**/{*,.*}.{js}}'
+      subject { source_file_globber.js_files_glob }
+      it { is_expected.to eq(expected_glob) }
+    end
+  end
+
   describe '#source_and_doc_files_glob' do
     context 'with everything unconfigured' do
       expected_glob =
