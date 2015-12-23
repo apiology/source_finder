@@ -1,3 +1,7 @@
+require_relative 'langs/ruby'
+require_relative 'langs/js'
+require_relative 'langs/python'
+
 module SourceFinder
   # Give configuration, finds source file locations by using an
   # inclusion and exclusion glob
@@ -10,29 +14,14 @@ module SourceFinder
 
     attr_accessor :exclude_files_arr
 
-    attr_accessor :ruby_dirs_arr, :extra_ruby_files_arr,
-                  :ruby_file_extensions_arr
+    include RubySourceFileGlobber
 
-    attr_accessor :js_dirs_arr, :extra_js_files_arr,
-                  :js_file_extensions_arr
+    include JsSourceFileGlobber
 
-    attr_accessor :python_dirs_arr, :extra_python_files_arr,
-                  :python_file_extensions_arr
+    include PythonSourceFileGlobber
 
     def initialize(globber: Dir)
       @globber = globber
-    end
-
-    def ruby_dirs_arr
-      @ruby_dirs_arr ||= %w(app config db feature lib spec src test)
-    end
-
-    def js_dirs_arr
-      @js_dirs_arr ||= %w(app src www)
-    end
-
-    def python_dirs_arr
-      @python_dirs_arr ||= %w(src)
     end
 
     def source_dirs_arr
@@ -45,18 +34,6 @@ module SourceFinder
         (extra_ruby_files_arr +
          extra_js_files_arr +
          extra_python_files_arr).concat(%w(Dockerfile)).sort.uniq
-    end
-
-    def extra_ruby_files_arr
-      @extra_ruby_files_arr ||= %w(Rakefile)
-    end
-
-    def extra_js_files_arr
-      @extra_js_files_arr ||= []
-    end
-
-    def extra_python_files_arr
-      @extra_python_files_arr ||= []
     end
 
     def exclude_files_arr
@@ -122,59 +99,12 @@ module SourceFinder
       @source_files_exclude_glob || "{#{exclude_files_arr.join(', ')}}"
     end
 
-    def js_file_extensions_arr
-      @js_file_extensions_arr || %w(js)
-    end
-
-    def js_file_extensions_glob
-      @js_file_extensions_glob ||= js_file_extensions_arr.join(',')
-    end
-
-    def js_files_glob
-      make_files_glob(extra_js_files_arr, js_dirs_arr,
-                      js_file_extensions_glob)
-    end
-
-    def ruby_file_extensions_arr
-      @ruby_file_extensions_arr || %w(gemspec rake rb)
-    end
-
-    def ruby_file_extensions_glob
-      @ruby_file_extensions_glob ||= ruby_file_extensions_arr.join(',')
-    end
-
-    def ruby_files_glob
-      make_files_glob(extra_ruby_files_arr, ruby_dirs_arr,
-                      ruby_file_extensions_glob)
-    end
-
-    def python_file_extensions_arr
-      @python_file_extensions_arr || %w(py)
-    end
-
-    def python_file_extensions_glob
-      @python_file_extensions_glob ||= python_file_extensions_arr.join(',')
-    end
-
-    def python_files_glob
-      make_files_glob(extra_python_files_arr, python_dirs_arr,
-                      python_file_extensions_glob)
-    end
-
     def emacs_lockfile?(filename)
       File.basename(filename) =~ /^\.#/
     end
 
     def exclude_garbage(files_arr)
       files_arr.reject { |filename| emacs_lockfile?(filename) }
-    end
-
-    def ruby_files_arr
-      exclude_garbage(@globber.glob(ruby_files_glob) - exclude_files_arr)
-    end
-
-    def js_files_arr
-      exclude_garbage(@globber.glob(js_files_glob) - exclude_files_arr)
     end
 
     def python_files_arr
