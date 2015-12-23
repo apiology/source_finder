@@ -1,4 +1,5 @@
 module SourceFinder
+  # Globber for JavaScript
   module JsSourceFileGlobber
     attr_accessor :js_dirs_arr, :extra_js_files_arr,
                   :js_file_extensions_arr

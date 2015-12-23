@@ -1,4 +1,5 @@
 module SourceFinder
+  # Globber for Python
   module PythonSourceFileGlobber
     attr_accessor :python_dirs_arr, :extra_python_files_arr,
                   :python_file_extensions_arr
