@@ -16,6 +16,9 @@ module SourceFinder
     attr_accessor :js_dirs_arr, :extra_js_files_arr,
                   :js_file_extensions_arr
 
+    attr_accessor :python_dirs_arr, :extra_python_files_arr,
+                  :python_file_extensions_arr
+
     def initialize(globber: Dir)
       @globber = globber
     end
@@ -28,14 +31,20 @@ module SourceFinder
       @js_dirs_arr ||= %w(src www lib)
     end
 
+    def python_dirs_arr
+      @python_dirs_arr ||= %w(src)
+    end
+
     def source_dirs_arr
-      @source_dirs_arr ||= (ruby_dirs_arr + js_dirs_arr).sort.uniq
+      @source_dirs_arr ||= (ruby_dirs_arr + js_dirs_arr +
+                            python_dirs_arr).sort.uniq
     end
 
     def extra_source_files_arr
       @extra_source_files_arr ||=
         (extra_ruby_files_arr +
-         extra_js_files_arr).concat(%w(Dockerfile)).sort.uniq
+         extra_js_files_arr +
+         extra_python_files_arr).concat(%w(Dockerfile)).sort.uniq
     end
 
     def extra_ruby_files_arr
@@ -44,6 +53,10 @@ module SourceFinder
 
     def extra_js_files_arr
       @extra_js_files_arr ||= []
+    end
+
+    def extra_python_files_arr
+      @extra_python_files_arr ||= []
     end
 
     def exclude_files_arr
@@ -58,6 +71,7 @@ module SourceFinder
       @source_file_extensions_arr ||=
         (ruby_file_extensions_arr +
          js_file_extensions_arr +
+         python_file_extensions_arr +
          %w(swift cpp c java py clj cljs scala yml sh json)).sort.uniq
     end
 
@@ -129,6 +143,19 @@ module SourceFinder
                       ruby_file_extensions_glob)
     end
 
+    def python_file_extensions_arr
+      @python_file_extensions_arr || %w(gemspec rake rb)
+    end
+
+    def python_file_extensions_glob
+      @python_file_extensions_glob ||= python_file_extensions_arr.join(',')
+    end
+
+    def python_files_glob
+      make_files_glob(extra_python_files_arr, python_dirs_arr,
+                      python_file_extensions_glob)
+    end
+
     def emacs_lockfile?(filename)
       File.basename(filename) =~ /^\.#/
     end
@@ -143,6 +170,10 @@ module SourceFinder
 
     def js_files_arr
       exclude_garbage(@globber.glob(js_files_glob) - exclude_files_arr)
+    end
+
+    def python_files_arr
+      exclude_garbage(@globber.glob(python_files_glob) - exclude_files_arr)
     end
 
     def source_files_arr
