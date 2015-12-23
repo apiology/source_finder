@@ -9,71 +9,6 @@ describe SourceFinder::SourceFileGlobber do
     described_class.new(globber: globber)
   end
 
-  describe '#ruby_dirs_arr' do
-    context 'when unconfigured' do
-      subject { source_file_globber.ruby_dirs_arr }
-      it { is_expected.to eq(%w(app config db feature lib spec src test)) }
-    end
-    let_double :ruby_dirs
-    context 'when configured' do
-      before { source_file_globber.ruby_dirs_arr = ruby_dirs }
-      subject { source_file_globber.ruby_dirs_arr }
-      it { is_expected.to eq(ruby_dirs) }
-    end
-  end
-
-  describe '#ruby_files_glob' do
-    context 'with everything unconfigured' do
-      expected_glob = '{Rakefile,{*,.*}.{gemspec,rake,rb},{app,config,' \
-                      'db,feature,lib,spec,src,test}/**/{*,.*}.' \
-                      '{gemspec,rake,rb}}'
-      subject { source_file_globber.ruby_files_glob }
-      it { is_expected.to eq(expected_glob) }
-    end
-  end
-
-  describe '#js_dirs_arr' do
-    context 'when unconfigured' do
-      subject { source_file_globber.js_dirs_arr }
-      it { is_expected.to eq(%w(app src www)) }
-    end
-    let_double :js_dirs
-    context 'when configured' do
-      before { source_file_globber.js_dirs_arr = js_dirs }
-      subject { source_file_globber.js_dirs_arr }
-      it { is_expected.to eq(js_dirs) }
-    end
-  end
-
-  describe '#js_files_glob' do
-    context 'with everything unconfigured' do
-      expected_glob = '{{*,.*}.{js},{app,src,www}/**/{*,.*}.{js}}'
-      subject { source_file_globber.js_files_glob }
-      it { is_expected.to eq(expected_glob) }
-    end
-  end
-
-  describe '#python_dirs_arr' do
-    context 'when unconfigured' do
-      subject { source_file_globber.python_dirs_arr }
-      it { is_expected.to eq(%w(src)) }
-    end
-    let_double :python_dirs
-    context 'when configured' do
-      before { source_file_globber.python_dirs_arr = python_dirs }
-      subject { source_file_globber.python_dirs_arr }
-      it { is_expected.to eq(python_dirs) }
-    end
-  end
-
-  describe '#python_files_glob' do
-    context 'with everything unconfigured' do
-      expected_glob = '{{*,.*}.{py},{src}/**/{*,.*}.{py}}'
-      subject { source_file_globber.python_files_glob }
-      it { is_expected.to eq(expected_glob) }
-    end
-  end
-
   describe '#source_and_doc_files_glob' do
     context 'with everything unconfigured' do
       expected_glob =
@@ -141,38 +76,6 @@ describe SourceFinder::SourceFileGlobber do
       subject { source_file_globber.source_files_glob }
       it { is_expected.to eq(expected_glob) }
     end
-  end
-
-  describe '#ruby_files_arr' do
-    before do
-      expect(globber).to receive(:glob)
-        .with('{Rakefile,{*,.*}.{gemspec,rake,rb},' \
-              '{app,config,db,feature,lib,spec,src,test}/**/{*,.*}.' \
-              '{gemspec,rake,rb}}')
-        .and_return(['bing/baz.rb'])
-    end
-    subject { source_file_globber.ruby_files_arr }
-    it { is_expected.to eq(['bing/baz.rb']) }
-  end
-
-  describe '#js_files_arr' do
-    before do
-      expect(globber).to(receive(:glob))
-        .with('{{*,.*}.{js},{app,src,www}/**/{*,.*}.{js}}')
-        .and_return(['bing/baz.js'])
-    end
-    subject { source_file_globber.js_files_arr }
-    it { is_expected.to eq(['bing/baz.js']) }
-  end
-
-  describe '#python_files_arr' do
-    before do
-      expect(globber).to(receive(:glob))
-        .with('{{*,.*}.{py},{src}/**/{*,.*}.{py}}')
-        .and_return(['bing/baz.py'])
-    end
-    subject { source_file_globber.python_files_arr }
-    it { is_expected.to eq(['bing/baz.py']) }
   end
 
   SOURCE_FILE_GLOB =
