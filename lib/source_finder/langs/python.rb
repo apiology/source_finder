@@ -23,5 +23,9 @@ module SourceFinder
       make_files_glob(extra_python_files_arr, python_dirs_arr,
                       python_file_extensions_glob)
     end
+
+    def python_files_arr
+      exclude_garbage(@globber.glob(python_files_glob) - exclude_files_arr)
+    end
   end
 end

@@ -107,10 +107,6 @@ module SourceFinder
       files_arr.reject { |filename| emacs_lockfile?(filename) }
     end
 
-    def python_files_arr
-      exclude_garbage(@globber.glob(python_files_glob) - exclude_files_arr)
-    end
-
     def source_files_arr
       exclude_garbage(@globber.glob(source_files_glob) - exclude_files_arr)
     end
