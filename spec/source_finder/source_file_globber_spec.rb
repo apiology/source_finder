@@ -155,6 +155,26 @@ describe SourceFinder::SourceFileGlobber do
     it { is_expected.to eq(['bing/baz.rb']) }
   end
 
+  describe '#js_files_arr' do
+    before do
+      expect(globber).to(receive(:glob))
+        .with('{{*,.*}.{js},{app,src,www}/**/{*,.*}.{js}}')
+        .and_return(['bing/baz.js'])
+    end
+    subject { source_file_globber.js_files_arr }
+    it { is_expected.to eq(['bing/baz.js']) }
+  end
+
+  describe '#python_files_arr' do
+    before do
+      expect(globber).to(receive(:glob))
+        .with('{{*,.*}.{py},{src}/**/{*,.*}.{py}}')
+        .and_return(['bing/baz.py'])
+    end
+    subject { source_file_globber.python_files_arr }
+    it { is_expected.to eq(['bing/baz.py']) }
+  end
+
   SOURCE_FILE_GLOB =
     '{Dockerfile,Rakefile,{*,.*}.' \
     '{c,clj,cljs,cpp,gemspec,java,js,json,py,rake,rb,scala,sh,swift,' \
