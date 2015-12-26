@@ -12,7 +12,7 @@ describe SourceFinder::SourceFileGlobber do
   describe '#ruby_dirs_arr' do
     context 'when unconfigured' do
       subject { source_file_globber.ruby_dirs_arr }
-      it { is_expected.to eq(%w(src app config db lib test spec feature)) }
+      it { is_expected.to eq(%w(app config db feature lib spec src test)) }
     end
     let_double :ruby_dirs
     context 'when configured' do
@@ -24,8 +24,9 @@ describe SourceFinder::SourceFileGlobber do
 
   describe '#ruby_files_glob' do
     context 'with everything unconfigured' do
-      expected_glob = '{Rakefile,{*,.*}.{rb,rake,gemspec},{src,app,config,' \
-                      'db,lib,test,spec,feature}/**/{*,.*}.{rb,rake,gemspec}}'
+      expected_glob = '{Rakefile,{*,.*}.{gemspec,rake,rb},{app,config,' \
+                      'db,feature,lib,spec,src,test}/**/{*,.*}.' \
+                      '{gemspec,rake,rb}}'
       subject { source_file_globber.ruby_files_glob }
       it { is_expected.to eq(expected_glob) }
     end
@@ -40,10 +41,10 @@ describe SourceFinder::SourceFileGlobber do
   describe '#ruby_files_arr' do
     before do
       expect_exclude_files_found
-      expect(globber).to(receive(:glob))
-        .with('{Rakefile,{*,.*}.{rb,rake,gemspec},' \
-              '{src,app,config,db,lib,test,spec,feature}/**/{*,.*}.' \
-              '{rb,rake,gemspec}}')
+      expect(globber).to receive(:glob)
+        .with('{Rakefile,{*,.*}.{gemspec,rake,rb},' \
+              '{app,config,db,feature,lib,spec,src,test}/**/{*,.*}.' \
+              '{gemspec,rake,rb}}')
         .and_return(['bing/baz.rb'])
     end
     subject { source_file_globber.ruby_files_arr }
