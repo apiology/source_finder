@@ -81,8 +81,15 @@ module SourceFinder
     end
 
     def source_and_doc_file_extensions_glob
-      @source_and_doc_file_extensions_glob ||=
-        source_and_doc_file_extensions_arr.join(',')
+      if @source_and_doc_file_extensions_glob
+        @source_and_doc_file_extensions_glob
+      elsif @source_file_extensions_glob
+        @source_and_doc_file_extensions_glob ||=
+          @source_file_extensions_glob + ',' + source_file_extensions_glob
+      else
+        @source_and_doc_file_extensions_glob ||=
+          source_and_doc_file_extensions_arr.join(',')
+      end
     end
 
     def source_files_glob
