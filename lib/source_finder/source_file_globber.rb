@@ -42,11 +42,11 @@ module SourceFinder
 
     def exclude_files_arr
       if @source_files_exclude_glob
-        @globber.glob(@source_files_exclude_glob)
+        exclude_garbage(@globber.glob(@source_files_exclude_glob))
       elsif @exclude_files_arr
         @exclude_files_arr
       else
-        @globber.glob(default_source_files_exclude_glob)
+        exclude_garbage(@globber.glob(default_source_files_exclude_glob))
       end
     end
 
@@ -62,10 +62,10 @@ module SourceFinder
 
     def source_file_extensions_arr
       @source_file_extensions_arr ||=
-        (ruby_file_extensions_arr +
-         js_file_extensions_arr +
-         python_file_extensions_arr +
-         %w(swift cpp c java py clj cljs scala yml sh json)).sort.uniq
+        exclude_garbage((ruby_file_extensions_arr +
+                         js_file_extensions_arr +
+                         python_file_extensions_arr +
+                         %w(swift cpp c java py clj cljs scala yml sh json)))
     end
 
     def doc_file_extensions_arr
@@ -77,7 +77,7 @@ module SourceFinder
     end
 
     def source_and_doc_file_extensions_arr
-      (doc_file_extensions_arr + source_file_extensions_arr).sort.uniq
+      exclude_garbage(doc_file_extensions_arr + source_file_extensions_arr)
     end
 
     def source_and_doc_file_extensions_glob
@@ -121,6 +121,7 @@ module SourceFinder
 
     def exclude_garbage(files_arr)
       files_arr.reject { |filename| emacs_lockfile?(filename) }
+        .sort.uniq
     end
 
     def source_files_arr
