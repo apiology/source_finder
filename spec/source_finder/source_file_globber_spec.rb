@@ -12,10 +12,10 @@ describe SourceFinder::SourceFileGlobber do
   describe '#source_and_doc_files_glob' do
     context 'with everything unconfigured' do
       expected_glob =
-        '{Dockerfile,Rakefile,{*,.*}.{c,clj,cljs,cpp,gemspec,java,js,json,' \
-        'md,py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,spec,' \
-        'src,test,www}/**/{*,.*}.{c,clj,cljs,cpp,gemspec,java,js,json,md,py,' \
-        'rake,rb,scala,sh,swift,yml}}'
+        '{Dockerfile,Rakefile,{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,' \
+        'json,md,py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,' \
+        'spec,src,test,www}/**/{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,' \
+        'md,py,rake,rb,scala,sh,swift,yml}}'
       subject { source_file_globber.source_and_doc_files_glob }
       it { is_expected.to eq(expected_glob) }
     end
@@ -23,9 +23,9 @@ describe SourceFinder::SourceFileGlobber do
 
   describe '#source_files_glob' do
     subject(:default_source_files_glob) do
-      '{Dockerfile,Rakefile,{*,.*}.{c,clj,cljs,cpp,gemspec,java,js,json,' \
+      '{Dockerfile,Rakefile,{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,' \
       'py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,spec,src,' \
-      'test,www}/**/{*,.*}.{c,clj,cljs,cpp,gemspec,java,js,json,' \
+      'test,www}/**/{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,' \
       'py,rake,rb,scala,sh,swift,yml}}'
     end
 
@@ -59,9 +59,9 @@ describe SourceFinder::SourceFileGlobber do
 
   SOURCE_FILE_GLOB =
     '{Dockerfile,Rakefile,{*,.*}.' \
-    '{c,clj,cljs,cpp,gemspec,java,js,json,py,rake,rb,scala,sh,swift,' \
+    '{c,clj,cljs,cpp,gemspec,html,java,js,json,py,rake,rb,scala,sh,swift,' \
     'yml},{app,config,db,feature,lib,spec,src,test,www}/' \
-    '**/{*,.*}.{c,clj,cljs,cpp,gemspec,java,js,json,py,rake,rb,scala,sh,' \
+    '**/{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,py,rake,rb,scala,sh,' \
     'swift,yml}}'
 
   def expect_exclude_files_found
@@ -78,6 +78,6 @@ describe SourceFinder::SourceFileGlobber do
         .and_return(['foo.md', 'bar.js', 'bing/baz.rb', 'bing/vendor/buzzo.rb'])
     end
     subject { source_file_globber.source_files_arr }
-    it { is_expected.to eq(['foo.md', 'bar.js', 'bing/baz.rb']) }
+    it { is_expected.to eq(['bar.js', 'bing/baz.rb', 'foo.md']) }
   end
 end

@@ -27,7 +27,7 @@ describe SourceFinder::SourceFileGlobber do
   end
 
   describe '#exclude_files_arr' do
-    let_double :source_arr
+    subject(:source_arr) { ['file1', 'file2'] }
     context 'with configured glob' do
       before do
         source_file_globber.source_files_exclude_glob = '{*.txt}'
