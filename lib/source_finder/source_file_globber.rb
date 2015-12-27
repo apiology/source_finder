@@ -60,12 +60,16 @@ module SourceFinder
       end
     end
 
+    def default_source_file_extensions_arr
+      %w(swift cpp c html java py clj cljs scala yml sh json)
+    end
+
     def source_file_extensions_arr
       @source_file_extensions_arr ||=
         exclude_garbage((ruby_file_extensions_arr +
                          js_file_extensions_arr +
                          python_file_extensions_arr +
-                         %w(swift cpp c java py clj cljs scala yml sh json)))
+                         default_source_file_extensions_arr))
     end
 
     def doc_file_extensions_arr
