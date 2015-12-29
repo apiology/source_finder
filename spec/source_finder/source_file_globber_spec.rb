@@ -14,7 +14,8 @@ describe SourceFinder::SourceFileGlobber do
       subject(:expected_glob) do
         '{Dockerfile,Rakefile,{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,' \
         'json,md,py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,' \
-        'spec,src,test,www}/**/{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,' \
+        'spec,src,test,www}/**/{*,.*}.' \
+        '{c,clj,cljs,cpp,gemspec,html,java,js,json,' \
         'md,py,rake,rb,scala,sh,swift,yml}}'
       end
       subject { source_file_globber.source_and_doc_files_glob }
@@ -30,7 +31,8 @@ describe SourceFinder::SourceFileGlobber do
     end
     context 'source_file_extensions_glob configured' do
       subject(:expected_glob) do
-        '{Dockerfile,Rakefile,{*,.*}.{a,b,md},{app,config,db,feature,lib,spec,src,test,www}/**/{*,.*}.{a,b,md}}'
+        '{Dockerfile,Rakefile,{*,.*}.{a,b,md},' \
+        '{app,config,db,feature,lib,spec,src,test,www}/**/{*,.*}.{a,b,md}}'
       end
       before do
         source_file_globber.source_file_extensions_glob = 'a,b'
@@ -60,12 +62,12 @@ describe SourceFinder::SourceFileGlobber do
         source_file_globber.extra_ruby_files_arr = ['mumble.rb']
         source_file_globber.extra_source_files_arr =
           ['AUTOEXEC.BAT', 'CONFIG.SYS'] +
-            source_file_globber.extra_ruby_files_arr
+          source_file_globber.extra_ruby_files_arr
         source_file_globber.ruby_file_extensions_arr =
           ['.RB', '.RAKE']
         source_file_globber.source_file_extensions_arr =
           source_file_globber.ruby_file_extensions_arr +
-            ['JAVA', 'C#']
+          ['JAVA', 'C#']
         source_file_globber.source_dirs_arr = %w(dir1 dir2)
       end
       expected_glob =
