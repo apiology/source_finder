@@ -89,7 +89,7 @@ module SourceFinder
         @source_and_doc_file_extensions_glob
       elsif @source_file_extensions_glob
         @source_and_doc_file_extensions_glob ||=
-          @source_file_extensions_glob + ',' + source_file_extensions_glob
+          @source_file_extensions_glob + ',' + doc_file_extensions_arr.join(',')
       else
         @source_and_doc_file_extensions_glob ||=
           source_and_doc_file_extensions_arr.join(',')

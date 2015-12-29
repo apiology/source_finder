@@ -11,11 +11,30 @@ describe SourceFinder::SourceFileGlobber do
 
   describe '#source_and_doc_files_glob' do
     context 'with everything unconfigured' do
-      expected_glob =
+      subject(:expected_glob) do
         '{Dockerfile,Rakefile,{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,' \
         'json,md,py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,' \
         'spec,src,test,www}/**/{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,' \
         'md,py,rake,rb,scala,sh,swift,yml}}'
+      end
+      subject { source_file_globber.source_and_doc_files_glob }
+      context 'called once' do
+        it { is_expected.to eq(expected_glob) }
+      end
+      context 'called twice' do
+        before do
+          source_file_globber.source_and_doc_files_glob # calculate and cache
+        end
+        it { is_expected.to eq(expected_glob) }
+      end
+    end
+    context 'source_file_extensions_glob configured' do
+      subject(:expected_glob) do
+        '{Dockerfile,Rakefile,{*,.*}.{a,b,md},{app,config,db,feature,lib,spec,src,test,www}/**/{*,.*}.{a,b,md}}'
+      end
+      before do
+        source_file_globber.source_file_extensions_glob = 'a,b'
+      end
       subject { source_file_globber.source_and_doc_files_glob }
       it { is_expected.to eq(expected_glob) }
     end
