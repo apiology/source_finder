@@ -36,10 +36,10 @@ module SourceFinder
     end
 
     def exclude_files_arr
-      if @source_files_exclude_glob
-        exclude_garbage(@globber.glob(@source_files_exclude_glob))
-      elsif @exclude_files_arr
+      if @exclude_files_arr
         @exclude_files_arr
+      elsif @source_files_exclude_glob
+        exclude_garbage(@globber.glob(@source_files_exclude_glob))
       else
         exclude_garbage(@globber.glob(default_source_files_exclude_glob))
       end
