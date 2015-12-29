@@ -9,15 +9,11 @@ module SourceFinder
     # See README.md for documentation on these configuration parameters.
     attr_accessor :source_dirs_arr, :extra_source_files_arr,
                   :source_file_extensions_arr, :source_files_glob,
-                  :source_files_exclude_glob,
-                  :source_file_extensions_glob
-
-    attr_accessor :exclude_files_arr
+                  :source_files_exclude_glob, :source_file_extensions_glob,
+                  :exclude_files_arr
 
     include RubySourceFileGlobber
-
     include JsSourceFileGlobber
-
     include PythonSourceFileGlobber
 
     def initialize(globber: Dir)
@@ -31,9 +27,8 @@ module SourceFinder
 
     def extra_source_files_arr
       @extra_source_files_arr ||=
-        (extra_ruby_files_arr +
-         extra_js_files_arr +
-         extra_python_files_arr).concat(%w(Dockerfile)).sort.uniq
+        (extra_ruby_files_arr + extra_js_files_arr + extra_python_files_arr)
+        .concat(%w(Dockerfile)).sort.uniq
     end
 
     def default_source_files_exclude_glob
@@ -108,22 +103,15 @@ module SourceFinder
     end
 
     def arr2glob(arr)
-      glob = ''
-      glob += "#{arr.join(',')}," if arr.size > 0
-      glob
+      arr.size > 0 ? "#{arr.join(',')}," : ''
     end
 
     def make_files_glob(extra_source_files_arr,
                         dirs_arr,
                         extensions_glob)
-      glob = '{'
-      glob += arr2glob(extra_source_files_arr)
-      glob +=
-        "{*,.*}.{#{extensions_glob}}," +
-        File.join("{#{dirs_arr.join(',')}}",
-                  '**',
+      '{' + arr2glob(extra_source_files_arr) + "{*,.*}.{#{extensions_glob}}," +
+        File.join("{#{dirs_arr.join(',')}}", '**',
                   "{*,.*}.{#{extensions_glob}}") + '}'
-      glob
     end
 
     def emacs_lockfile?(filename)
@@ -131,8 +119,7 @@ module SourceFinder
     end
 
     def exclude_garbage(files_arr)
-      files_arr.reject { |filename| emacs_lockfile?(filename) }
-        .sort.uniq
+      files_arr.reject { |filename| emacs_lockfile?(filename) }.sort.uniq
     end
 
     def source_files_arr
