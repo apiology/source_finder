@@ -2,6 +2,7 @@ module SourceFinder
   # Globber for Ruby
   module RubySourceFileGlobber
     attr_accessor :ruby_dirs_arr, :extra_ruby_files_arr,
+                  :ruby_file_extensions_glob,
                   :ruby_file_extensions_arr
 
     def ruby_dirs_arr
@@ -12,12 +13,17 @@ module SourceFinder
       @extra_ruby_files_arr ||= %w(Rakefile)
     end
 
+    # XXX: Add this to other languages as well--pull out pattern?
     def ruby_file_extensions_arr
-      @ruby_file_extensions_arr || %w(gemspec rake rb)
+      if @ruby_file_extensions_glob
+        fail "glob already set, can't retrieve arr from extension glob"
+      else
+        @ruby_file_extensions_arr || %w(gemspec rake rb)
+      end
     end
 
     def ruby_file_extensions_glob
-      @ruby_file_extensions_glob ||= ruby_file_extensions_arr.join(',')
+      @ruby_file_extensions_glob || ruby_file_extensions_arr.join(',')
     end
 
     def ruby_files_glob
