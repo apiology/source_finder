@@ -52,21 +52,18 @@ describe SourceFinder::SourceFileGlobber do
   end
 
   describe '#ruby_file_extensions_arr' do
+    subject { source_file_globber.ruby_file_extensions_arr }
     context 'when nothing configured' do
-      subject { source_file_globber.ruby_file_extensions_arr }
       it { is_expected.to eq(%w(gemspec rake rb)) }
     end
     context 'when ruby_file_extensions_glob configured' do
       before { source_file_globber.ruby_file_extensions_glob = 'a,b' }
-      # XXX: Can I dedupe this?
-      subject { source_file_globber.ruby_file_extensions_arr }
       it 'should not raise' do
         expect { subject }.to raise_error(RuntimeError)
       end
     end
     context 'when ruby_file_extensions_arr configured' do
       before { source_file_globber.ruby_file_extensions_arr = %w(c d) }
-      subject { source_file_globber.ruby_file_extensions_arr }
       it { is_expected.to eq(%w(c d)) }
     end
   end
