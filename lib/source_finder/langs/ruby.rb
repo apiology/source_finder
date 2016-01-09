@@ -2,7 +2,6 @@ module SourceFinder
   # Globber for Ruby
   module RubySourceFileGlobber
     attr_accessor :ruby_dirs_arr, :extra_ruby_files_arr,
-                  :ruby_file_extensions_glob,
                   :ruby_file_extensions_arr
 
     def ruby_dirs_arr

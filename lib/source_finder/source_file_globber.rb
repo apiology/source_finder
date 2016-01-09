@@ -9,8 +9,7 @@ module SourceFinder
     # See README.md for documentation on these configuration parameters.
     attr_accessor :source_dirs_arr, :extra_source_files_arr,
                   :source_file_extensions_arr, :source_files_glob,
-                  :source_files_exclude_glob, :source_file_extensions_glob,
-                  :exclude_files_arr
+                  :source_files_exclude_glob, :exclude_files_arr
 
     include RubySourceFileGlobber
     include JsSourceFileGlobber
@@ -112,7 +111,6 @@ module SourceFinder
     end
 
     def make_extensions_arr(glob_var, arr_var, default_arr)
-      fail 'glob already set' if glob_var
       arr_var || default_arr
     end
 
