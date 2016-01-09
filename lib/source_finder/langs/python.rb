@@ -19,7 +19,7 @@ module SourceFinder
     end
 
     def python_file_extensions_glob
-      @python_file_extensions_glob ||= python_file_extensions_arr.join(',')
+      @python_file_extensions_glob || python_file_extensions_arr.join(',')
     end
 
     def python_files_glob
