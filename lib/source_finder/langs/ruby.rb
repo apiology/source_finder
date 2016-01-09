@@ -13,13 +13,12 @@ module SourceFinder
     end
 
     def ruby_file_extensions_arr
-      make_extensions_arr(@ruby_file_extensions_glob,
-                          @ruby_file_extensions_arr,
+      make_extensions_arr(@ruby_file_extensions_arr,
                           %w(gemspec rake rb))
     end
 
     def ruby_file_extensions_glob
-      @ruby_file_extensions_glob || ruby_file_extensions_arr.join(',')
+      ruby_file_extensions_arr.join(',')
     end
 
     def ruby_files_glob

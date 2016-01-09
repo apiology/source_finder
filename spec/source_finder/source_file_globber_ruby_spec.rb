@@ -56,12 +56,6 @@ describe SourceFinder::SourceFileGlobber do
     context 'when nothing configured' do
       it { is_expected.to eq(%w(gemspec rake rb)) }
     end
-    context 'when ruby_file_extensions_glob configured' do
-      before { source_file_globber.ruby_file_extensions_glob = 'a,b' }
-      it 'does not raise' do
-        expect { subject }.to raise_error(RuntimeError)
-      end
-    end
     context 'when ruby_file_extensions_arr configured' do
       before { source_file_globber.ruby_file_extensions_arr = %w(c d) }
       it { is_expected.to eq(%w(c d)) }

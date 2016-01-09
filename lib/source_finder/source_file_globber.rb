@@ -70,7 +70,7 @@ module SourceFinder
     end
 
     def source_file_extensions_glob
-      @source_file_extensions_glob ||= source_file_extensions_arr.join(',')
+      source_file_extensions_arr.join(',')
     end
 
     def source_and_doc_file_extensions_arr
@@ -78,15 +78,7 @@ module SourceFinder
     end
 
     def source_and_doc_file_extensions_glob
-      if @source_and_doc_file_extensions_glob
-        @source_and_doc_file_extensions_glob
-      elsif @source_file_extensions_glob
-        @source_and_doc_file_extensions_glob ||=
-          @source_file_extensions_glob + ',' + doc_file_extensions_arr.join(',')
-      else
-        @source_and_doc_file_extensions_glob ||=
-          source_and_doc_file_extensions_arr.join(',')
-      end
+      source_and_doc_file_extensions_arr.join(',')
     end
 
     def source_files_glob
@@ -110,7 +102,7 @@ module SourceFinder
                   "{*,.*}.{#{extensions_glob}}") + '}'
     end
 
-    def make_extensions_arr(glob_var, arr_var, default_arr)
+    def make_extensions_arr(arr_var, default_arr)
       arr_var || default_arr
     end
 

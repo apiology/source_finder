@@ -29,16 +29,5 @@ describe SourceFinder::SourceFileGlobber do
         it { is_expected.to eq(expected_glob) }
       end
     end
-    context 'source_file_extensions_glob configured' do
-      subject(:expected_glob) do
-        '{Dockerfile,Rakefile,{*,.*}.{a,b,md},' \
-        '{app,config,db,feature,lib,spec,src,test,www}/**/{*,.*}.{a,b,md}}'
-      end
-      before do
-        source_file_globber.source_file_extensions_glob = 'a,b'
-      end
-      subject { source_file_globber.source_and_doc_files_glob }
-      it { is_expected.to eq(expected_glob) }
-    end
   end
 end

@@ -13,13 +13,12 @@ module SourceFinder
     end
 
     def js_file_extensions_arr
-      make_extensions_arr(@js_file_extensions_glob,
-                          @js_file_extensions_arr,
+      make_extensions_arr(@js_file_extensions_arr,
                           %w(js))
     end
 
     def js_file_extensions_glob
-      @js_file_extensions_glob || js_file_extensions_arr.join(',')
+      js_file_extensions_arr.join(',')
     end
 
     def js_files_glob
