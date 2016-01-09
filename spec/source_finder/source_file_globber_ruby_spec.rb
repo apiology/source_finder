@@ -58,7 +58,7 @@ describe SourceFinder::SourceFileGlobber do
     end
     context 'when ruby_file_extensions_glob configured' do
       before { source_file_globber.ruby_file_extensions_glob = 'a,b' }
-      it 'should not raise' do
+      it 'does not raise' do
         expect { subject }.to raise_error(RuntimeError)
       end
     end
