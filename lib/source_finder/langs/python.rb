@@ -13,7 +13,9 @@ module SourceFinder
     end
 
     def python_file_extensions_arr
-      @python_file_extensions_arr || %w(py)
+      make_extensions_arr(@python_file_extensions_glob,
+                          @python_file_extensions_arr,
+                          %w(py))
     end
 
     def python_file_extensions_glob

@@ -36,9 +36,8 @@ module SourceFinder
     end
 
     def exclude_files_arr
-      if @exclude_files_arr
-        @exclude_files_arr
-      elsif @source_files_exclude_glob
+      return @exclude_files_arr if @exclude_files_arr
+      if @source_files_exclude_glob
         exclude_garbage(@globber.glob(@source_files_exclude_glob))
       else
         exclude_garbage(@globber.glob(default_source_files_exclude_glob))
@@ -106,12 +105,15 @@ module SourceFinder
       arr.size > 0 ? "#{arr.join(',')}," : ''
     end
 
-    def make_files_glob(extra_source_files_arr,
-                        dirs_arr,
-                        extensions_glob)
+    def make_files_glob(extra_source_files_arr, dirs_arr, extensions_glob)
       '{' + arr2glob(extra_source_files_arr) + "{*,.*}.{#{extensions_glob}}," +
         File.join("{#{dirs_arr.join(',')}}", '**',
                   "{*,.*}.{#{extensions_glob}}") + '}'
+    end
+
+    def make_extensions_arr(glob_var, arr_var, default_arr)
+      fail 'glob already set' if glob_var
+      arr_var || default_arr
     end
 
     def emacs_lockfile?(filename)
