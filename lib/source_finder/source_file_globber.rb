@@ -93,7 +93,7 @@ module SourceFinder
     end
 
     def arr2glob(arr)
-      arr.size > 0 ? "#{arr.join(',')}," : ''
+      !arr.empty? ? "#{arr.join(',')}," : ''
     end
 
     def make_files_glob(extra_source_files_arr, dirs_arr, extensions_glob)

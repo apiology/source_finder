@@ -32,13 +32,15 @@ describe SourceFinder::SourceFileGlobber do
 
   def expect_exclude_files_found
     expect(globber).to(receive(:glob))
-      .with('**/vendor/**')
-      .and_return(['bing/vendor/buzzo.rb', 'bing/vendor/README.md'])
+                   .with('**/vendor/**')
+                   .and_return(['bing/vendor/buzzo.rb',
+                                'bing/vendor/README.md'])
   end
 
   describe '#python_files_arr' do
     before do
-      expect(globber).to(receive(:glob))
+      expect(globber)
+        .to(receive(:glob))
         .with('{{*,.*}.{py},{src}/**/{*,.*}.{py}}')
         .and_return(['bing/baz.py'])
       expect_exclude_files_found

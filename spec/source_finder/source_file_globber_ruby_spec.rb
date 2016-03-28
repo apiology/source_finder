@@ -33,7 +33,8 @@ describe SourceFinder::SourceFileGlobber do
   end
 
   def expect_exclude_files_found
-    expect(globber).to(receive(:glob))
+    expect(globber)
+      .to(receive(:glob))
       .with('**/vendor/**')
       .and_return(['bing/vendor/buzzo.rb', 'bing/vendor/README.md'])
   end

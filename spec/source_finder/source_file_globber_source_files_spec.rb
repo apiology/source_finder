@@ -50,10 +50,11 @@ describe SourceFinder::SourceFileGlobber do
     '{c,clj,cljs,cpp,gemspec,html,java,js,json,py,rake,rb,scala,sh,swift,' \
     'yml},{app,config,db,feature,lib,spec,src,test,www}/' \
     '**/{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,py,rake,rb,scala,sh,' \
-    'swift,yml}}'
+    'swift,yml}}'.freeze
 
   def expect_exclude_files_found
-    expect(globber).to(receive(:glob))
+    expect(globber)
+      .to(receive(:glob))
       .with('**/vendor/**')
       .and_return(['bing/vendor/buzzo.rb', 'bing/vendor/README.md'])
   end
@@ -61,7 +62,8 @@ describe SourceFinder::SourceFileGlobber do
   describe '#source_files_arr' do
     before do
       expect_exclude_files_found
-      expect(globber).to(receive(:glob))
+      expect(globber)
+        .to(receive(:glob))
         .with(SOURCE_FILE_GLOB)
         .and_return(['foo.md', 'bar.js', 'bing/baz.rb', 'bing/vendor/buzzo.rb'])
     end

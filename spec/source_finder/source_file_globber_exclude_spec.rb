@@ -32,7 +32,7 @@ describe SourceFinder::SourceFileGlobber do
       before do
         source_file_globber.source_files_exclude_glob = '{*.txt}'
         expect(globber).to(receive(:glob)).with('{*.txt}')
-          .and_return(source_arr)
+                       .and_return(source_arr)
       end
       subject { source_file_globber.exclude_files_arr }
       it { is_expected.to eq(source_arr) }
