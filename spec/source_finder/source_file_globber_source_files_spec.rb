@@ -13,7 +13,7 @@ describe SourceFinder::SourceFileGlobber do
     subject(:default_source_files_glob) do
       '{Dockerfile,Rakefile,{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,' \
       'py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,spec,src,' \
-      'test,www}/**/{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,' \
+      'test,tests,www}/**/{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,' \
       'py,rake,rb,scala,sh,swift,yml}}'
     end
 
@@ -48,7 +48,7 @@ describe SourceFinder::SourceFileGlobber do
   SOURCE_FILE_GLOB =
     '{Dockerfile,Rakefile,{*,.*}.' \
     '{c,clj,cljs,cpp,gemspec,html,java,js,json,py,rake,rb,scala,sh,swift,' \
-    'yml},{app,config,db,feature,lib,spec,src,test,www}/' \
+    'yml},{app,config,db,feature,lib,spec,src,test,tests,www}/' \
     '**/{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,py,rake,rb,scala,sh,' \
     'swift,yml}}'.freeze
 

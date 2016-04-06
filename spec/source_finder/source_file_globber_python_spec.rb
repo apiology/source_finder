@@ -12,7 +12,7 @@ describe SourceFinder::SourceFileGlobber do
   describe '#python_dirs_arr' do
     context 'when unconfigured' do
       subject { source_file_globber.python_dirs_arr }
-      it { is_expected.to eq(%w(src)) }
+      it { is_expected.to eq(%w(src tests)) }
     end
     let_double :python_dirs
     context 'when configured' do
@@ -24,7 +24,7 @@ describe SourceFinder::SourceFileGlobber do
 
   describe '#python_files_glob' do
     context 'with everything unconfigured' do
-      expected_glob = '{{*,.*}.{py},{src}/**/{*,.*}.{py}}'
+      expected_glob = '{{*,.*}.{py},{src,tests}/**/{*,.*}.{py}}'
       subject { source_file_globber.python_files_glob }
       it { is_expected.to eq(expected_glob) }
     end
@@ -41,7 +41,7 @@ describe SourceFinder::SourceFileGlobber do
     before do
       expect(globber)
         .to(receive(:glob))
-        .with('{{*,.*}.{py},{src}/**/{*,.*}.{py}}')
+        .with('{{*,.*}.{py},{src,tests}/**/{*,.*}.{py}}')
         .and_return(['bing/baz.py'])
       expect_exclude_files_found
     end

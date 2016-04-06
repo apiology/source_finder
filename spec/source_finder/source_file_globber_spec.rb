@@ -14,7 +14,7 @@ describe SourceFinder::SourceFileGlobber do
       subject(:expected_glob) do
         '{Dockerfile,Rakefile,{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,' \
         'json,md,py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,' \
-        'spec,src,test,www}/**/{*,.*}.' \
+        'spec,src,test,tests,www}/**/{*,.*}.' \
         '{c,clj,cljs,cpp,gemspec,html,java,js,json,' \
         'md,py,rake,rb,scala,sh,swift,yml}}'
       end

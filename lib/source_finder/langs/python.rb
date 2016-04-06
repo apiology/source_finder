@@ -5,7 +5,7 @@ module SourceFinder
                   :python_file_extensions_arr
 
     def python_dirs_arr
-      @python_dirs_arr ||= %w(src)
+      @python_dirs_arr ||= %w(src tests)
     end
 
     def extra_python_files_arr
