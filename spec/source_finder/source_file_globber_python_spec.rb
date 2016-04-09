@@ -48,4 +48,22 @@ describe SourceFinder::SourceFileGlobber do
     subject { source_file_globber.python_files_arr }
     it { is_expected.to eq(['bing/baz.py']) }
   end
+
+  describe '#python_file_extensions_arr' do
+    subject { source_file_globber.python_file_extensions_arr }
+    context 'when nothing configured' do
+      it { is_expected.to eq(%w(py)) }
+    end
+    context 'when python_file_extensions_arr configured' do
+      before { source_file_globber.python_file_extensions_arr = %w(c d) }
+      it { is_expected.to eq(%w(c d)) }
+    end
+  end
+
+  describe '#python_file_extensions_glob' do
+    subject { source_file_globber.python_file_extensions_glob }
+    context 'when nothing configured' do
+      it { is_expected.to eq('py') }
+    end
+  end
 end
