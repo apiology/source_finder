@@ -1,8 +1,8 @@
 module SourceFinder
   # Globber for JavaScript
   module JsSourceFileGlobber
-    attr_accessor :js_dirs_arr, :extra_js_files_arr,
-                  :js_file_extensions_arr
+    attr_writer :js_dirs_arr, :extra_js_files_arr,
+                :js_file_extensions_arr
 
     def js_dirs_arr
       @js_dirs_arr ||= %w(app src www)
@@ -13,8 +13,8 @@ module SourceFinder
     end
 
     def js_file_extensions_arr
-      make_extensions_arr(@js_file_extensions_arr,
-                          %w(js))
+      arr = @js_file_extensions_arr if defined? @js_file_extensions_arr
+      make_extensions_arr(arr, %w(js))
     end
 
     def js_file_extensions_glob

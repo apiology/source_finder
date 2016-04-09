@@ -7,9 +7,9 @@ module SourceFinder
   # inclusion and exclusion glob
   class SourceFileGlobber
     # See README.md for documentation on these configuration parameters.
-    attr_accessor :source_dirs_arr, :extra_source_files_arr,
-                  :source_file_extensions_arr, :source_files_glob,
-                  :source_files_exclude_glob, :exclude_files_arr
+    attr_writer :source_dirs_arr, :extra_source_files_arr,
+                :source_file_extensions_arr, :source_files_glob,
+                :source_files_exclude_glob, :exclude_files_arr
 
     include RubySourceFileGlobber
     include JsSourceFileGlobber
@@ -17,6 +17,9 @@ module SourceFinder
 
     def initialize(globber: Dir)
       @globber = globber
+      @exclude_files_arr = nil
+      @source_files_exclude_glob = nil
+      @exclude_files_arr = nil
     end
 
     def source_dirs_arr
@@ -36,8 +39,8 @@ module SourceFinder
 
     def exclude_files_arr
       return @exclude_files_arr if @exclude_files_arr
-      if @source_files_exclude_glob
-        exclude_garbage(@globber.glob(@source_files_exclude_glob))
+      if source_files_exclude_glob
+        exclude_garbage(@globber.glob(source_files_exclude_glob))
       else
         exclude_garbage(@globber.glob(default_source_files_exclude_glob))
       end
@@ -82,7 +85,8 @@ module SourceFinder
     end
 
     def source_files_glob
-      @source_files_glob ||
+      glob = @source_files_glob if defined? @source_files_glob
+      glob ||
         make_files_glob(extra_source_files_arr, source_dirs_arr,
                         source_file_extensions_glob)
     end

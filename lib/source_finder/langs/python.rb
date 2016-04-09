@@ -1,8 +1,8 @@
 module SourceFinder
   # Globber for Python
   module PythonSourceFileGlobber
-    attr_accessor :python_dirs_arr, :extra_python_files_arr,
-                  :python_file_extensions_arr
+    attr_writer :python_dirs_arr, :extra_python_files_arr,
+                :python_file_extensions_arr
 
     def python_dirs_arr
       @python_dirs_arr ||= %w(src tests)
@@ -13,12 +13,15 @@ module SourceFinder
     end
 
     def python_file_extensions_arr
-      make_extensions_arr(@python_file_extensions_arr,
-                          %w(py))
+      arr = @python_file_extensions_arr if defined? @python_file_extensions_arr
+      make_extensions_arr(arr, %w(py))
     end
 
     def python_file_extensions_glob
-      @python_file_extensions_glob || python_file_extensions_arr.join(',')
+      glob = if defined? @python_file_extensions_glob
+               @python_file_extensions_glob
+             end
+      glob || python_file_extensions_arr.join(',')
     end
 
     def python_files_glob
