@@ -12,10 +12,11 @@ describe SourceFinder::SourceFileGlobber do
   describe '#source_and_doc_files_glob' do
     context 'with everything unconfigured' do
       subject(:expected_glob) do
-        '{Dockerfile,Rakefile,{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,' \
+        '{Dockerfile,Rakefile,{*,.*}.' \
+        '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,' \
         'json,md,py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,' \
-        'spec,src,test,tests,www}/**/{*,.*}.' \
-        '{c,clj,cljs,cpp,gemspec,html,java,js,json,' \
+        'spec,src,test,tests,var,www}/**/{*,.*}.' \
+        '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
         'md,py,rake,rb,scala,sh,swift,yml}}'
       end
       subject { source_file_globber.source_and_doc_files_glob }

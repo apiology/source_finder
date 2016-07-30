@@ -1,6 +1,7 @@
 require_relative 'langs/ruby'
 require_relative 'langs/js'
 require_relative 'langs/python'
+require_relative 'langs/groovy'
 
 module SourceFinder
   # Give configuration, finds source file locations by using an
@@ -14,6 +15,7 @@ module SourceFinder
     include RubySourceFileGlobber
     include JsSourceFileGlobber
     include PythonSourceFileGlobber
+    include GroovySourceFileGlobber
 
     def initialize(globber: Dir)
       @globber = globber
@@ -24,12 +26,13 @@ module SourceFinder
 
     def source_dirs_arr
       @source_dirs_arr ||= (ruby_dirs_arr + js_dirs_arr +
-                            python_dirs_arr).sort.uniq
+                            python_dirs_arr + groovy_dirs_arr).sort.uniq
     end
 
     def extra_source_files_arr
       @extra_source_files_arr ||=
-        (extra_ruby_files_arr + extra_js_files_arr + extra_python_files_arr)
+        (extra_ruby_files_arr + extra_js_files_arr +
+         extra_python_files_arr + extra_groovy_files_arr)
         .concat(%w(Dockerfile)).sort.uniq
     end
 
@@ -62,6 +65,7 @@ module SourceFinder
         exclude_garbage((ruby_file_extensions_arr +
                          js_file_extensions_arr +
                          python_file_extensions_arr +
+                         groovy_file_extensions_arr +
                          default_source_file_extensions_arr))
     end
 

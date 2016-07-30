@@ -11,9 +11,11 @@ describe SourceFinder::SourceFileGlobber do
 
   describe '#source_files_glob' do
     subject(:default_source_files_glob) do
-      '{Dockerfile,Rakefile,{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,' \
+      '{Dockerfile,Rakefile,{*,.*}.' \
+      '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
       'py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,spec,src,' \
-      'test,tests,www}/**/{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,' \
+      'test,tests,var,www}/**/{*,.*}.' \
+      '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
       'py,rake,rb,scala,sh,swift,yml}}'
     end
 
@@ -47,10 +49,11 @@ describe SourceFinder::SourceFileGlobber do
 
   SOURCE_FILE_GLOB =
     '{Dockerfile,Rakefile,{*,.*}.' \
-    '{c,clj,cljs,cpp,gemspec,html,java,js,json,py,rake,rb,scala,sh,swift,' \
-    'yml},{app,config,db,feature,lib,spec,src,test,tests,www}/' \
-    '**/{*,.*}.{c,clj,cljs,cpp,gemspec,html,java,js,json,py,rake,rb,scala,sh,' \
-    'swift,yml}}'.freeze
+    '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
+    'py,rake,rb,scala,sh,swift,' \
+    'yml},{app,config,db,feature,lib,spec,src,test,tests,var,www}/' \
+    '**/{*,.*}.{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
+    'py,rake,rb,scala,sh,swift,yml}}'.freeze
 
   def expect_exclude_files_found
     expect(globber)
