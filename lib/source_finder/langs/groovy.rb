@@ -5,7 +5,7 @@ module SourceFinder
                 :groovy_file_extensions_arr
 
     def groovy_dirs_arr
-      @groovy_dirs_arr ||= %w(app src var www)
+      @groovy_dirs_arr ||= %w(app src vars www)
     end
 
     def extra_groovy_files_arr

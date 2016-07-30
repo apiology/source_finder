@@ -14,7 +14,7 @@ describe SourceFinder::SourceFileGlobber do
       '{Dockerfile,Rakefile,{*,.*}.' \
       '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
       'py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,spec,src,' \
-      'test,tests,var,www}/**/{*,.*}.' \
+      'test,tests,vars,www}/**/{*,.*}.' \
       '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
       'py,rake,rb,scala,sh,swift,yml}}'
     end
@@ -51,7 +51,7 @@ describe SourceFinder::SourceFileGlobber do
     '{Dockerfile,Rakefile,{*,.*}.' \
     '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
     'py,rake,rb,scala,sh,swift,' \
-    'yml},{app,config,db,feature,lib,spec,src,test,tests,var,www}/' \
+    'yml},{app,config,db,feature,lib,spec,src,test,tests,vars,www}/' \
     '**/{*,.*}.{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
     'py,rake,rb,scala,sh,swift,yml}}'.freeze
 

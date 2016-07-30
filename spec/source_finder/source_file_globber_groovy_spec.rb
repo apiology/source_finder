@@ -12,7 +12,7 @@ describe SourceFinder::SourceFileGlobber do
   describe '#groovy_dirs_arr' do
     context 'when unconfigured' do
       subject { source_file_globber.groovy_dirs_arr }
-      it { is_expected.to eq(%w(app src var www)) }
+      it { is_expected.to eq(%w(app src vars www)) }
     end
     let_double :groovy_dirs
     context 'when configured' do
@@ -24,7 +24,7 @@ describe SourceFinder::SourceFileGlobber do
 
   describe '#groovy_files_glob' do
     context 'with everything unconfigured' do
-      expected_glob = '{{*,.*}.{groovy},{app,src,var,www}/**/{*,.*}.{groovy}}'
+      expected_glob = '{{*,.*}.{groovy},{app,src,vars,www}/**/{*,.*}.{groovy}}'
       subject { source_file_globber.groovy_files_glob }
       it { is_expected.to eq(expected_glob) }
     end
@@ -40,7 +40,7 @@ describe SourceFinder::SourceFileGlobber do
   describe '#groovy_files_arr' do
     before do
       expect(globber).to(receive(:glob))
-                     .with('{{*,.*}.{groovy},{app,src,var,www}/**/{*,.*}.' \
+                     .with('{{*,.*}.{groovy},{app,src,vars,www}/**/{*,.*}.' \
                            '{groovy}}')
                      .and_return(['bing/baz.groovy'])
       expect_exclude_files_found
