@@ -21,7 +21,7 @@ module SourceFinder
 
     def add_glob_option(opts, options)
       opts.on('-g glob here', '--glob',
-              'Which files to parse - ' \
+              "Which files to parse - " \
               "default is #{default_source_files_glob}") do |v|
         options[:glob] = v
       end

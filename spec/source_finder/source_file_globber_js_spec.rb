@@ -36,10 +36,10 @@ describe SourceFinder::SourceFileGlobber do
     end
   end
 
-  def expect_exclude_files_found
-    expect(globber).to(receive(:glob))
-                   .with('**/vendor/**')
-                   .and_return(['bing/vendor/buzzo.rb',
+  def allow_exclude_files_found
+    allow(globber).to(receive(:glob))
+                  .with('**/vendor/**')
+                  .and_return(['bing/vendor/buzzo.rb',
                                 'bing/vendor/README.md'])
   end
 
@@ -47,10 +47,10 @@ describe SourceFinder::SourceFileGlobber do
     subject { source_file_globber.js_files_arr }
 
     before do
-      expect(globber).to(receive(:glob))
-                     .with('{{*,.*}.{js},{app,src,www}/**/{*,.*}.{js}}')
-                     .and_return(['bing/baz.js'])
-      expect_exclude_files_found
+      allow(globber).to(receive(:glob))
+                    .with('{{*,.*}.{js},{app,src,www}/**/{*,.*}.{js}}')
+                    .and_return(['bing/baz.js'])
+      allow_exclude_files_found
     end
 
     it { is_expected.to eq(['bing/baz.js']) }

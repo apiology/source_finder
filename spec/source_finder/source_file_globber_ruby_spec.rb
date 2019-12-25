@@ -38,8 +38,8 @@ describe SourceFinder::SourceFileGlobber do
     end
   end
 
-  def expect_exclude_files_found
-    expect(globber)
+  def allow_exclude_files_found
+    allow(globber)
       .to(receive(:glob))
       .with('**/vendor/**')
       .and_return(['bing/vendor/buzzo.rb', 'bing/vendor/README.md'])
@@ -49,8 +49,8 @@ describe SourceFinder::SourceFileGlobber do
     subject { source_file_globber.ruby_files_arr }
 
     before do
-      expect_exclude_files_found
-      expect(globber).to receive(:glob)
+      allow_exclude_files_found
+      allow(globber).to receive(:glob)
         .with('{Rakefile,{*,.*}.{gemspec,rake,rb},' \
               '{app,config,db,feature,lib,spec,src,test}/**/{*,.*}.' \
               '{gemspec,rake,rb}}')
