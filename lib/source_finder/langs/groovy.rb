@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SourceFinder
   # Globber for JavaScript
   module GroovySourceFileGlobber
@@ -5,7 +7,7 @@ module SourceFinder
                 :groovy_file_extensions_arr
 
     def groovy_dirs_arr
-      @groovy_dirs_arr ||= %w(app src vars www)
+      @groovy_dirs_arr ||= %w[app src vars www]
     end
 
     def extra_groovy_files_arr
@@ -14,7 +16,7 @@ module SourceFinder
 
     def groovy_file_extensions_arr
       arr = @groovy_file_extensions_arr if defined? @groovy_file_extensions_arr
-      make_extensions_arr(arr, %w(groovy))
+      make_extensions_arr(arr, %w[groovy])
     end
 
     def groovy_file_extensions_glob

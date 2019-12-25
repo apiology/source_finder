@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'source_file_globber'
 
 module SourceFinder

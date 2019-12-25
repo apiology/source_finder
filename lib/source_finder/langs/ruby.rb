@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SourceFinder
   # Globber for Ruby
   module RubySourceFileGlobber
@@ -5,16 +7,16 @@ module SourceFinder
                 :ruby_file_extensions_arr
 
     def ruby_dirs_arr
-      @ruby_dirs_arr ||= %w(app config db feature lib spec src test)
+      @ruby_dirs_arr ||= %w[app config db feature lib spec src test]
     end
 
     def extra_ruby_files_arr
-      @extra_ruby_files_arr ||= %w(Rakefile)
+      @extra_ruby_files_arr ||= %w[Rakefile]
     end
 
     def ruby_file_extensions_arr
       arr = @ruby_file_extensions_arr if defined? @ruby_file_extensions_arr
-      make_extensions_arr(arr, %w(gemspec rake rb))
+      make_extensions_arr(arr, %w[gemspec rake rb])
     end
 
     def ruby_file_extensions_glob

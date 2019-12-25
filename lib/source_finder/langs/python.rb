@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SourceFinder
   # Globber for Python
   module PythonSourceFileGlobber
@@ -5,7 +7,7 @@ module SourceFinder
                 :python_file_extensions_arr
 
     def python_dirs_arr
-      @python_dirs_arr ||= %w(src tests)
+      @python_dirs_arr ||= %w[src tests]
     end
 
     def extra_python_files_arr
@@ -14,7 +16,7 @@ module SourceFinder
 
     def python_file_extensions_arr
       arr = @python_file_extensions_arr if defined? @python_file_extensions_arr
-      make_extensions_arr(arr, %w(py))
+      make_extensions_arr(arr, %w[py])
     end
 
     def python_file_extensions_glob
