@@ -4,11 +4,11 @@ require 'spec_helper'
 require 'source_finder/source_file_globber'
 
 describe SourceFinder::SourceFileGlobber do
-  let_double :globber
-
   subject(:source_file_globber) do
     described_class.new(globber: globber)
   end
+
+  let(:globber) { class_double(Dir, 'globber') }
 
   describe '#source_files_exclude_glob' do
     context 'with configured arr' do

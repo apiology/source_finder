@@ -4,20 +4,21 @@ require 'spec_helper'
 require 'source_finder/source_file_globber'
 
 describe SourceFinder::SourceFileGlobber do
-  let_double :globber
-
   subject(:source_file_globber) do
     described_class.new(globber: globber)
   end
 
+  let(:globber) { class_double(Dir, 'globber') }
+
   describe '#ruby_dirs_arr' do
+    let(:ruby_dirs) { instance_double(Array) }
+
     context 'when unconfigured' do
       subject { source_file_globber.ruby_dirs_arr }
 
       it { is_expected.to eq(%w[app config db feature lib spec src test]) }
     end
 
-    let_double :ruby_dirs
     context 'when configured' do
       subject { source_file_globber.ruby_dirs_arr }
 

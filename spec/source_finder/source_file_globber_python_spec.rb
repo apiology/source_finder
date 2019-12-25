@@ -4,20 +4,21 @@ require 'spec_helper'
 require 'source_finder/source_file_globber'
 
 describe SourceFinder::SourceFileGlobber do
-  let_double :globber
-
   subject(:source_file_globber) do
     described_class.new(globber: globber)
   end
 
+  let(:globber) { class_double(Dir, 'globber') }
+
   describe '#python_dirs_arr' do
+    let(:python_dirs) { instance_double(Array) }
+
     context 'when unconfigured' do
       subject { source_file_globber.python_dirs_arr }
 
       it { is_expected.to eq(%w[src tests]) }
     end
 
-    let_double :python_dirs
     context 'when configured' do
       subject { source_file_globber.python_dirs_arr }
 
@@ -38,9 +39,9 @@ describe SourceFinder::SourceFileGlobber do
 
   def allow_exclude_files_found
     allow(globber).to(receive(:glob))
-                   .with('**/vendor/**')
-                   .and_return(['bing/vendor/buzzo.rb',
-                                'bing/vendor/README.md'])
+                  .with('**/vendor/**')
+                  .and_return(['bing/vendor/buzzo.rb',
+                               'bing/vendor/README.md'])
   end
 
   describe '#python_files_arr' do

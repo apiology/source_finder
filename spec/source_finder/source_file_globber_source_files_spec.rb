@@ -4,11 +4,11 @@ require 'spec_helper'
 require 'source_finder/source_file_globber'
 
 describe SourceFinder::SourceFileGlobber do
-  let_double :globber
-
   subject(:source_file_globber) do
     described_class.new(globber: globber)
   end
+
+  let(:globber) { class_double(Dir, 'globber') }
 
   describe '#source_files_glob' do
     subject(:default_source_files_glob) do
@@ -20,13 +20,13 @@ describe SourceFinder::SourceFileGlobber do
       'py,rake,rb,scala,sh,swift,yml}}'
     end
 
+    let(:source_dirs) { instance_double(Array) }
+
     context 'with everything unconfigured' do
       subject { source_file_globber.source_files_glob }
 
       it { is_expected.to eq(default_source_files_glob) }
     end
-
-    let_double :source_dirs
 
     context 'when everything configured' do
       subject { source_file_globber.source_files_glob }
@@ -52,14 +52,6 @@ describe SourceFinder::SourceFileGlobber do
     end
   end
 
-  SOURCE_FILE_GLOB =
-    '{Dockerfile,Rakefile,{*,.*}.' \
-    '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
-    'py,rake,rb,scala,sh,swift,' \
-    'yml},{app,config,db,feature,lib,spec,src,test,tests,vars,www}/' \
-    '**/{*,.*}.{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
-    'py,rake,rb,scala,sh,swift,yml}}'
-
   def allow_exclude_files_found
     allow(globber)
       .to(receive(:glob))
@@ -70,11 +62,20 @@ describe SourceFinder::SourceFileGlobber do
   describe '#source_files_arr' do
     subject { source_file_globber.source_files_arr }
 
+    let(:source_file_glob) do
+      '{Dockerfile,Rakefile,{*,.*}.' \
+      '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
+      'py,rake,rb,scala,sh,swift,' \
+      'yml},{app,config,db,feature,lib,spec,src,test,tests,vars,www}/' \
+      '**/{*,.*}.{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
+      'py,rake,rb,scala,sh,swift,yml}}'
+    end
+
     before do
       allow_exclude_files_found
       allow(globber)
         .to(receive(:glob))
-        .with(SOURCE_FILE_GLOB)
+        .with(source_file_glob)
         .and_return(['foo.md', 'bar.js', 'bing/baz.rb', 'bing/vendor/buzzo.rb'])
     end
 

@@ -4,20 +4,21 @@ require 'spec_helper'
 require 'source_finder/source_file_globber'
 
 describe SourceFinder::SourceFileGlobber do
-  let_double :globber
-
   subject(:source_file_globber) do
     described_class.new(globber: globber)
   end
 
+  let(:globber) { class_double(Dir, 'globber') }
+
   describe '#js_dirs_arr' do
+    let(:js_dirs) { instance_double(Array) }
+
     context 'when unconfigured' do
       subject { source_file_globber.js_dirs_arr }
 
       it { is_expected.to eq(%w[app src www]) }
     end
 
-    let_double :js_dirs
     context 'when configured' do
       subject { source_file_globber.js_dirs_arr }
 
@@ -40,7 +41,7 @@ describe SourceFinder::SourceFileGlobber do
     allow(globber).to(receive(:glob))
                   .with('**/vendor/**')
                   .and_return(['bing/vendor/buzzo.rb',
-                                'bing/vendor/README.md'])
+                               'bing/vendor/README.md'])
   end
 
   describe '#js_files_arr' do
