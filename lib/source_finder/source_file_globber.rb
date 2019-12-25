@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'langs/ruby'
 require_relative 'langs/js'
 require_relative 'langs/python'
@@ -33,7 +35,7 @@ module SourceFinder
       @extra_source_files_arr ||=
         (extra_ruby_files_arr + extra_js_files_arr +
          extra_python_files_arr + extra_groovy_files_arr)
-        .concat(%w(Dockerfile)).sort.uniq
+        .concat(%w[Dockerfile]).sort.uniq
     end
 
     def default_source_files_exclude_glob
@@ -57,7 +59,7 @@ module SourceFinder
     end
 
     def default_source_file_extensions_arr
-      %w(swift cpp c html java py clj cljs scala yml sh json)
+      %w[swift cpp c html java py clj cljs scala yml sh json]
     end
 
     def source_file_extensions_arr
@@ -70,7 +72,7 @@ module SourceFinder
     end
 
     def doc_file_extensions_arr
-      @doc_file_extensions_arr ||= %w(md)
+      @doc_file_extensions_arr ||= %w[md]
     end
 
     def source_file_extensions_glob
