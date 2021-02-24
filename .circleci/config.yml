@@ -1,0 +1,103 @@
+---
+version: 2.1
+
+commands:
+  overcommit:
+    description: "Run overcommit"
+    steps:
+      - checkout
+      - restore_cache:
+          key: fix.sh-v1-{{ checksum "fix.sh" }}
+      - run:
+          name: Initialize packages
+          command: './fix.sh'
+      - save_cache:
+          key: fix.sh-v1-{{ checksum "fix.sh" }}
+          paths:
+            - "/home/circleci/.rbenv"
+            - "/home/circleci/.pyenv"
+      - run:
+          name: Download new circleci tool
+          command: |
+            curl -fLSs \
+            https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh | sudo bash
+      - run:
+          name: Run overcommit
+          command: |
+            export PATH="${HOME}/.pyenv/bin:${PATH}"
+            export PATH="${HOME}/.rbenv/bin:${HOME}/.rbenv/shims:${PATH}"
+            eval "$(pyenv init -)"
+            eval "$(pyenv virtualenv-init -)"
+            eval "$(rbenv init -)"
+            # Coax overcommit into working
+            git config --global user.email "test@test.test"
+            git config --global user.name "Test Test"
+            bundle exec overcommit --sign
+            bundle exec overcommit --sign pre-commit
+
+            bundle exec overcommit --run
+          environment:
+            # https://app.circleci.com/pipelines/github/apiology/cookiecutter-pypackage/4/workflows/29074dc8-944c-4600-8aaa-5116575fed90/jobs/4
+            "LC_ALL": "C.UTF-8"
+            "LANG": "C.UTF-8"
+
+jobs:
+  overcommit:
+    docker:
+      - image: circleci/ruby
+    steps:
+      - when:
+          condition:
+            equal: [<< pipeline.git.branch >>, "main"]
+          steps:
+            - overcommit
+      - unless:
+          condition:
+            equal: [<< pipeline.git.branch >>, "main"]
+          steps:
+            - run: echo "overcommit only runs on main branch"
+  build:
+    working_directory: ~/source_finder
+    docker:
+      - image: apiology/circleci-ruby:latest
+    steps:
+      - checkout
+      - restore_cache:
+          key: fix.sh-v1-{{ checksum "fix.sh" }}
+      - run:
+          name: Initialize packages
+          command: './fix.sh'
+      - save_cache:
+          key: fix.sh-v1-{{ checksum "fix.sh" }}
+          paths:
+            - "/home/circleci/.rbenv"
+            - "/home/circleci/.pyenv"
+      - run: sed -E -e 's/source_finder \([[:digit:]]+.[[:digit:]]+.[[:digit:]]+\)/source_finder (0.1.0)/g' Gemfile.lock > Gemfile.lock.deversioned
+      - restore_cache:
+          key: source_finder-{{ checksum "Gemfile.lock.deversioned" }}-v1
+      - run: gem install --no-document bundler
+      - run: bundle install --path vendor/bundle --jobs=4
+      - save_cache:
+          key: source_finder-{{ checksum "Gemfile.lock.deversioned" }}-v1
+          paths:
+            - "vendor/bundle"
+      - run: make test
+
+workflows:
+  version: 2
+  weekly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * 6"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - build
+  overcommit:
+    jobs:
+      - overcommit
+  build:
+    jobs:
+      - build
