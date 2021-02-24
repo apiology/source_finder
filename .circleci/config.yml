@@ -2,31 +2,35 @@
 version: 2.1
 
 commands:
-  overcommit:
-    description: "Run overcommit"
+  set_up_environment:
+    description: "Install source environment"
     steps:
       - checkout
-      - restore_cache:
-          key: fix.sh-v1-{{ checksum "fix.sh" }}
-      - run:
-          name: Initialize packages
-          command: './fix.sh'
-      - save_cache:
-          key: fix.sh-v1-{{ checksum "fix.sh" }}
-          paths:
-            - "/home/circleci/.rbenv"
-            - "/home/circleci/.pyenv"
       - run: |
           sed -E -e 's/source_finder \([[:digit:]]+.[[:digit:]]+.[[:digit:]]+\)/source_finder (0.1.0)/g' \
           Gemfile.lock > Gemfile.lock.deversioned
       - restore_cache:
           key: source_finder-{{ checksum "Gemfile.lock.deversioned" }}-v1
-      - run: gem install --no-document bundler
-      - run: bundle install --path vendor/bundle --jobs=4
+      - restore_cache:
+          key: fix.sh-v2-{{ checksum "fix.sh" }}
+      - run:
+          name: Initialize packages
+          command: |
+            export BUNDLE_PATH=vendor/bundle
+            './fix.sh'
+      - save_cache:
+          key: fix.sh-v2-{{ checksum "fix.sh" }}
+          paths:
+            - "/home/circleci/.rbenv"
+            - "/home/circleci/.pyenv"
       - save_cache:
           key: source_finder-{{ checksum "Gemfile.lock.deversioned" }}-v1
           paths:
             - "vendor/bundle"
+  overcommit:
+    description: "Run overcommit"
+    steps:
+      - set_up_environment
       - run:
           name: Download new circleci tool
           command: |
@@ -74,28 +78,7 @@ jobs:
     docker:
       - image: apiology/circleci-ruby:latest
     steps:
-      - checkout
-      - restore_cache:
-          key: fix.sh-v1-{{ checksum "fix.sh" }}
-      - run:
-          name: Initialize packages
-          command: './fix.sh'
-      - save_cache:
-          key: fix.sh-v1-{{ checksum "fix.sh" }}
-          paths:
-            - "/home/circleci/.rbenv"
-            - "/home/circleci/.pyenv"
-      - run: |
-          sed -E -e 's/source_finder \([[:digit:]]+.[[:digit:]]+.[[:digit:]]+\)/source_finder (0.1.0)/g' \
-          Gemfile.lock > Gemfile.lock.deversioned
-      - restore_cache:
-          key: source_finder-{{ checksum "Gemfile.lock.deversioned" }}-v1
-      - run: gem install --no-document bundler
-      - run: bundle install --path vendor/bundle --jobs=4
-      - save_cache:
-          key: source_finder-{{ checksum "Gemfile.lock.deversioned" }}-v1
-          paths:
-            - "vendor/bundle"
+      - set_up_environment
       - run: make test
 
 workflows:
