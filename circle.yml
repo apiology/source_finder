@@ -1,6 +1,0 @@
-dependencies:
-  pre:
-    - gem install bundler
-test:
-  override:
-    - bundle exec rake localtest

@@ -1,3 +1,7 @@
+---
+Layout/LineLength:
+  Max: 100
+
 # I like trailing commas in hashes.  They let me insert new elements and
 # see them as one line in a diff, not two.
 Style/TrailingCommaInHashLiteral:
@@ -18,13 +22,13 @@ Metrics/ParameterLists:
 # attr_reader :something_else
 # alias_method :something, :something_else
 Style/TrivialAccessors:
-   ExactNameMatch: true
+  ExactNameMatch: true
 
 #
 # Add 'XX X' to the standard list
 #
 Style/CommentAnnotation:
-   Keywords:
+  Keywords:
     - "TOD\
        O"
     - "FIXM\
@@ -61,14 +65,14 @@ RSpec/MultipleExpectations:
     - 'feature/**/*.rb'
 
 Style/StringLiterals:
-    EnforcedStyle: single_quotes
-    SupportedStyles:
-      - single_quotes
-      - double_quotes
-    ConsistentQuotesInMultiline: true
+  EnforcedStyle: single_quotes
+  SupportedStyles:
+    - single_quotes
+    - double_quotes
+  ConsistentQuotesInMultiline: true
 
 AllCops:
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.5
 
 
 require: rubocop-rspec
