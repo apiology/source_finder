@@ -72,7 +72,9 @@ jobs:
           paths:
             - "/home/circleci/.rbenv"
             - "/home/circleci/.pyenv"
-      - run: sed -E -e 's/source_finder \([[:digit:]]+.[[:digit:]]+.[[:digit:]]+\)/source_finder (0.1.0)/g' Gemfile.lock > Gemfile.lock.deversioned
+      - run: |
+          sed -E -e 's/source_finder \([[:digit:]]+.[[:digit:]]+.[[:digit:]]+\)/source_finder (0.1.0)/g' \
+          Gemfile.lock > Gemfile.lock.deversioned
       - restore_cache:
           key: source_finder-{{ checksum "Gemfile.lock.deversioned" }}-v1
       - run: gem install --no-document bundler
