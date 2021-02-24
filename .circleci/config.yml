@@ -55,6 +55,7 @@ jobs:
           condition:
             equal: [<< pipeline.git.branch >>, "main"]
           steps:
+            - overcommit  # TODO
             - run: echo "overcommit only runs on main branch"
   build:
     working_directory: ~/source_finder
