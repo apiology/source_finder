@@ -40,6 +40,7 @@ commands:
             eval "$(pyenv init -)"
             eval "$(pyenv virtualenv-init -)"
             eval "$(rbenv init -)"
+            export BUNDLE_PATH=vendor/bundle
             # Coax overcommit into working
             git config --global user.email "test@test.test"
             git config --global user.name "Test Test"
