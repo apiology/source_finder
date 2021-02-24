@@ -10,21 +10,21 @@ commands:
           sed -E -e 's/source_finder \([[:digit:]]+.[[:digit:]]+.[[:digit:]]+\)/source_finder (0.1.0)/g' \
           Gemfile.lock > Gemfile.lock.deversioned
       - restore_cache:
-          key: source_finder-{{ checksum "Gemfile.lock.deversioned" }}-v1
+          key: gems-v1-{{ checksum "Gemfile.lock.deversioned" }}
       - restore_cache:
-          key: fix.sh-v2-{{ checksum "fix.sh" }}
+          key: ruby-and-python-v2-{{ checksum "fix.sh" }}
       - run:
           name: Initialize packages
           command: |
             export BUNDLE_PATH=vendor/bundle
             './fix.sh'
       - save_cache:
-          key: fix.sh-v2-{{ checksum "fix.sh" }}
+          key: ruby-and-python-v2-{{ checksum "fix.sh" }}
           paths:
             - "/home/circleci/.rbenv"
             - "/home/circleci/.pyenv"
       - save_cache:
-          key: source_finder-{{ checksum "Gemfile.lock.deversioned" }}-v1
+          key: gems-v1-{{ checksum "Gemfile.lock.deversioned" }}
           paths:
             - "vendor/bundle"
   overcommit:
