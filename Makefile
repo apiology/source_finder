@@ -1,21 +1,40 @@
-.PHONY: spec feature
+.PHONY: clean test help quality localtest spec feature
+.DEFAULT_GOAL := default
 
-all: localtest
+define PRINT_HELP_PYSCRIPT
+import re, sys
 
-localtest:
-	@bundle exec rake localtest
+for line in sys.stdin:
+	match = re.match(r'^([a-zA-Z_-]+):.*?## (.*)$$', line)
+	if match:
+		target, help = match.groups()
+		print("%-20s %s" % (target, help))
+endef
+export PRINT_HELP_PYSCRIPT
 
-spec:
-	@bundle exec rake spec
+help:
+	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-feature:
-	@bundle exec rake feature
+default: localtest ## run default typechecking and tests
 
-quality:
+clean: ## remove all built artifacts
+
+test: ## run tests quickly
+
+quality:  ## run precommit quality checks
 	@bundle exec rake quality
 
-rubocop:
+rubocop: ## run RuboCop with quality ratcheting
 	@bundle exec rake rubocop
+
+spec: ## Run lower-level tests
+	@bundle exec rake spec
+
+feature: ## Run higher-level tests
+	@bundle exec rake feature
+
+localtest: ## run default local actions
+	@bundle exec rake localtest
 
 update_from_cookiecutter: ## Bring in changes from template project used to create this repo
 	IN_COOKIECUTTER_PROJECT_UPGRADER=1 cookiecutter_project_upgrader || true
