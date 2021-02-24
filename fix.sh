@@ -1,7 +1,5 @@
 #!/bin/bash -eu
 
-set -x
-
 set -o pipefail
 
 install_rbenv() {
@@ -64,6 +62,7 @@ ensure_ruby_version() {
 }
 
 ensure_bundle() {
+  set -x
   bundle --version >/dev/null 2>&1 || gem install bundler
   bundle install
 }
