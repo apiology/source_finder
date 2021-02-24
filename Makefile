@@ -19,7 +19,7 @@ default: localtest ## run default typechecking and tests
 
 clean: ## remove all built artifacts
 
-test: ## run tests quickly
+test: spec ## run tests quickly
 
 quality:  ## run precommit quality checks
 	@bundle exec rake quality
