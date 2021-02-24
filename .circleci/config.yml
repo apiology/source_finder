@@ -44,7 +44,7 @@ commands:
 jobs:
   overcommit:
     docker:
-      - image: circleci/ruby
+      - image: apiology/circleci-ruby:latest
     steps:
       - when:
           condition:
