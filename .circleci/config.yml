@@ -32,11 +32,6 @@ commands:
     steps:
       - set_up_environment
       - run:
-          name: Download new circleci tool
-          command: |
-            curl -fLSs \
-            https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh | sudo bash
-      - run:
           name: Run overcommit
           command: |
             export PATH="${HOME}/.pyenv/bin:${PATH}"
