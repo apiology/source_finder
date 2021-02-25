@@ -10,13 +10,13 @@ commands:
           sed -E -e 's/source_finder \([[:digit:]]+.[[:digit:]]+.[[:digit:]]+\)/source_finder (0.1.0)/g' \
           Gemfile.lock > Gemfile.lock.deversioned
       - restore_cache:
-          key: gems-v2-{{ checksum "Gemfile.lock.deversioned" }}
+          key: gems-v1-{{ checksum "Gemfile.lock.deversioned" }}
       - restore_cache:
           key: ruby-and-python-v2-{{ checksum "fix.sh" }}
       - run:
           name: Initialize packages
           command: |
-            bundle config set path 'vendor/bundle'
+            export BUNDLE_PATH=vendor/bundle
             './fix.sh'
       - save_cache:
           key: ruby-and-python-v2-{{ checksum "fix.sh" }}
@@ -24,7 +24,7 @@ commands:
             - "/home/circleci/.rbenv"
             - "/home/circleci/.pyenv"
       - save_cache:
-          key: gems-v2-{{ checksum "Gemfile.lock.deversioned" }}
+          key: gems-v1-{{ checksum "Gemfile.lock.deversioned" }}
           paths:
             - "vendor/bundle"
       - run:
@@ -78,7 +78,10 @@ jobs:
       - image: apiology/circleci-ruby:latest
     steps:
       - set_up_environment
-      - run: make test
+      - run:
+          command: |
+            export BUNDLE_PATH=vendor/bundle
+            make test
 
 workflows:
   version: 2

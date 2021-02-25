@@ -1,7 +1,5 @@
 #!/bin/bash -eu
 
-set -x  # TODO
-
 set -o pipefail
 
 install_rbenv() {
