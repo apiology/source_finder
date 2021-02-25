@@ -10,13 +10,13 @@ commands:
           sed -E -e 's/source_finder \([[:digit:]]+.[[:digit:]]+.[[:digit:]]+\)/source_finder (0.1.0)/g' \
           Gemfile.lock > Gemfile.lock.deversioned
       - restore_cache:
-          key: gems-v1-{{ checksum "Gemfile.lock.deversioned" }}
+          key: gems-v2-{{ checksum "Gemfile.lock.deversioned" }}
       - restore_cache:
           key: ruby-and-python-v2-{{ checksum "fix.sh" }}
       - run:
           name: Initialize packages
           command: |
-            export BUNDLE_PATH=vendor/bundle
+            bundle config set path 'vendor/bundle'
             './fix.sh'
       - save_cache:
           key: ruby-and-python-v2-{{ checksum "fix.sh" }}
@@ -24,7 +24,7 @@ commands:
             - "/home/circleci/.rbenv"
             - "/home/circleci/.pyenv"
       - save_cache:
-          key: gems-v1-{{ checksum "Gemfile.lock.deversioned" }}
+          key: gems-v2-{{ checksum "Gemfile.lock.deversioned" }}
           paths:
             - "vendor/bundle"
       - run:
@@ -44,7 +44,6 @@ commands:
             eval "$(pyenv init -)"
             eval "$(pyenv virtualenv-init -)"
             eval "$(rbenv init -)"
-            export BUNDLE_PATH=vendor/bundle
             # Coax overcommit into working
             git config --global user.email "test@test.test"
             git config --global user.name "Test Test"
@@ -79,10 +78,7 @@ jobs:
       - image: apiology/circleci-ruby:latest
     steps:
       - set_up_environment
-      - run:
-          command: |
-            export BUNDLE_PATH=vendor/bundle
-            make test
+      - run: make test
 
 workflows:
   version: 2
