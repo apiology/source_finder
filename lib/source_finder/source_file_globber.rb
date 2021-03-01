@@ -35,7 +35,7 @@ module SourceFinder
       @extra_source_files_arr ||=
         (extra_ruby_files_arr + extra_js_files_arr +
          extra_python_files_arr + extra_groovy_files_arr)
-        .concat(%w[Dockerfile]).sort.uniq
+          .concat(%w[Dockerfile]).sort.uniq
     end
 
     def default_source_files_exclude_glob
@@ -100,13 +100,15 @@ module SourceFinder
     end
 
     def arr2glob(arr)
-      !arr.empty? ? "#{arr.join(',')}," : ''
+      arr.empty? ? '' : "#{arr.join(',')},"
     end
 
     def make_files_glob(extra_source_files_arr, dirs_arr, extensions_glob)
+      # rubocop:disable Style/StringConcatenation
       '{' + arr2glob(extra_source_files_arr) + "{*,.*}.{#{extensions_glob}}," +
         File.join("{#{dirs_arr.join(',')}}", '**',
                   "{*,.*}.{#{extensions_glob}}") + '}'
+      # rubocop:enable Style/StringConcatenation
     end
 
     def make_extensions_arr(arr_var, default_arr)

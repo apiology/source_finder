@@ -39,9 +39,9 @@ describe SourceFinder::SourceFileGlobber do
 
   def allow_exclude_files_found
     allow(globber).to(receive(:glob))
-                  .with('**/vendor/**')
-                  .and_return(['bing/vendor/buzzo.rb',
-                               'bing/vendor/README.md'])
+      .with('**/vendor/**')
+      .and_return(['bing/vendor/buzzo.rb',
+                   'bing/vendor/README.md'])
   end
 
   describe '#js_files_arr' do
@@ -49,8 +49,8 @@ describe SourceFinder::SourceFileGlobber do
 
     before do
       allow(globber).to(receive(:glob))
-                    .with('{{*,.*}.{js},{app,src,www}/**/{*,.*}.{js}}')
-                    .and_return(['bing/baz.js'])
+        .with('{{*,.*}.{js},{app,src,www}/**/{*,.*}.{js}}')
+        .and_return(['bing/baz.js'])
       allow_exclude_files_found
     end
 

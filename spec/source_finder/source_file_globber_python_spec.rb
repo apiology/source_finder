@@ -39,9 +39,9 @@ describe SourceFinder::SourceFileGlobber do
 
   def allow_exclude_files_found
     allow(globber).to(receive(:glob))
-                  .with('**/vendor/**')
-                  .and_return(['bing/vendor/buzzo.rb',
-                               'bing/vendor/README.md'])
+      .with('**/vendor/**')
+      .and_return(['bing/vendor/buzzo.rb',
+                   'bing/vendor/README.md'])
   end
 
   describe '#python_files_arr' do
