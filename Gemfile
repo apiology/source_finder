@@ -2,4 +2,5 @@
 
 source 'https://rubygems.org'
 
-gem 'overcommit'
+# Specify your gem's dependencies in source_finder.gemspec
+gemspec
