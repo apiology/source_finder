@@ -3,7 +3,7 @@
     "email": "vince@broz.cc",
     "full_name": "Vince Broz",
     "github_username": "apiology",
-    "module_name": "Sourcefinder",
+    "module_name": "SourceFinder",
     "open_source_license": "MIT license",
     "project_name": "SourceFinder",
     "project_short_description": "SourceFinder's job is to find source files in your project in a configurable way--useful for things like static analysis quality tools.",

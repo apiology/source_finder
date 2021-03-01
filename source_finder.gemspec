@@ -7,7 +7,7 @@ require 'source_finder/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'source_finder'
-  spec.version       = Sourcefinder::VERSION
+  spec.version       = SourceFinder::VERSION
   spec.authors       = ["Vince Broz"]
   spec.email         = ['vince@broz.cc']
   spec.summary       = "SourceFinder's job is to find source files in your project in a configurable way--useful for things like static analysis quality tools."

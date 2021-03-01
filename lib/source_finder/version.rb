@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-module Sourcefinder
+module SourceFinder
   VERSION = '3.2.1'
 end
