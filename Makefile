@@ -30,8 +30,7 @@ spec: ## Run lower-level tests
 feature: ## Run higher-level tests
 	@bundle exec rake feature
 
-localtest: ## run default local actions
-	@bundle exec rake localtest
+localtest: spec quality ## run default local actions
 
 update_from_cookiecutter: ## Bring in changes from template project used to create this repo
 	IN_COOKIECUTTER_PROJECT_UPGRADER=1 cookiecutter_project_upgrader || true
