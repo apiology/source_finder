@@ -1,3 +1,4 @@
+# coding: ascii
 # frozen_string_literal: true
 
 lib = File.expand_path('lib', __dir__)
@@ -14,20 +15,25 @@ Gem::Specification.new do |spec|
                        'within a project.'
   spec.homepage      = 'https://github.com/apiology/source_finder'
   spec.license       = 'MIT'
+  spec.required_ruby_version = '>= 2.5'
 
-  spec.files         = Dir['CODE_OF_CONDUCT.md', 'LICENSE.txt', 'README.md',
-                           '{lib}/source_finder.rb',
-                           '{lib}/source_finder/**/*.rb',
-                           'source_finder.gemspec']
+  spec.files = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features)/})
+  end
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  # spec.add_runtime_dependency 'activesupport'
+
+  spec.add_development_dependency 'bump'
   spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'minitest-profile'
   spec.add_development_dependency 'overcommit'
-  spec.add_development_dependency 'quality', '~> 36'
-  spec.add_development_dependency 'rake', '>= 12.0'
-  spec.add_development_dependency 'rspec'
+  spec.add_development_dependency 'rake', '~> 13.0'
+  spec.add_development_dependency 'rspec', '>=3.4'
   spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'rubocop-rake'
+  spec.add_development_dependency 'rubocop-rspec'
   spec.add_development_dependency 'simplecov'
 end

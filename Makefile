@@ -22,10 +22,7 @@ clean: ## remove all built artifacts
 test: spec ## run tests quickly
 
 quality:  ## run precommit quality checks
-	@bundle exec rake quality
-
-rubocop: ## run RuboCop with quality ratcheting
-	@bundle exec rake rubocop
+	bundle exec overcommit --run
 
 spec: ## Run lower-level tests
 	@bundle exec rake spec
