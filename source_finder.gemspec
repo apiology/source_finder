@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Vince Broz"]
   spec.email         = ['vince@broz.cc']
   spec.summary       = "SourceFinder's job is to find source files in your project in a configurable way--useful for things like static analysis quality tools."
-  spec.homepage      = 'http://github.com/apiology/source_finder'
+  spec.homepage      = 'https://github.com/apiology/source_finder'
   spec.license       = 'MIT license'
   spec.required_ruby_version = '>= 2.5'
 
