@@ -38,8 +38,6 @@ commands:
           Gemfile.lock > Gemfile.lock.deversioned
       - restore_cache:
           key: gems-v4-{{ checksum "Gemfile.lock.deversioned" }}
-      - restore_cache:
-          key: ruby-and-python-v4-{{ checksum "fix.sh" }}
       - run:
           name: Initialize packages
           command: |
@@ -53,11 +51,6 @@ commands:
               >&2 echo "Please resolve changes to Gemfile.lock after bundle install to avoid caching difficulties"
               exit 1
             fi
-      - save_cache:
-          key: ruby-and-python-v4-{{ checksum "fix.sh" }}
-          paths:
-            - "/home/circleci/.rbenv"
-            - "/home/circleci/.pyenv"
       - save_cache:
           key: gems-v4-{{ checksum "Gemfile.lock.deversioned" }}
           paths:
