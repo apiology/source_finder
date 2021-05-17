@@ -14,8 +14,8 @@ Gem::Specification.new do |spec|
   spec.summary       = 'SourceFinder finds source and documentation files ' \
                        'within a project.'
   spec.homepage      = 'https://github.com/apiology/source_finder'
-  spec.license       = 'MIT'
-  spec.required_ruby_version = '>= 2.5'
+  spec.license       = 'MIT license'
+  spec.required_ruby_version = '>= 2.6'
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
