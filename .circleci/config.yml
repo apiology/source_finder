@@ -38,6 +38,8 @@ commands:
           Gemfile.lock > Gemfile.lock.deversioned
       - restore_cache:
           key: gems-v4-{{ checksum "Gemfile.lock.deversioned" }}
+      - restore_cache:
+          key: wheels-v1-{{ checksum "requirements_dev.txt" }}
       - run:
           name: Initialize packages
           command: |
@@ -55,6 +57,10 @@ commands:
           key: gems-v4-{{ checksum "Gemfile.lock.deversioned" }}
           paths:
             - "vendor/bundle"
+      - save_cache:
+          key: wheels-v1-{{ checksum "requirements_dev.txt" }}
+          paths:
+            - "/home/circleci/.cache/pip/wheels"
       - run:
           name: Download new circleci tool
           command: |
@@ -117,6 +123,7 @@ workflows:
                 - main
     jobs:
       - build
+      - overcommit
   overcommit:
     jobs:
       - overcommit
