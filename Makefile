@@ -15,7 +15,7 @@ export PRINT_HELP_PYSCRIPT
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-default: localtest ## run default typechecking and tests
+default: localtest ## run default tests and quality
 
 requirements_dev.txt.installed: requirements_dev.txt
 	pip install -q --disable-pip-version-check -r requirements_dev.txt
@@ -23,9 +23,11 @@ requirements_dev.txt.installed: requirements_dev.txt
 
 pip_install: requirements_dev.txt.installed ## Install Python dependencies
 
-Gemfile.lock:
-	bundle install
+# bundle install doesn't get run here so that we can catch it below in
+# fresh-checkout and fresh-rbenv cases
+Gemfile.lock: Gemfile
 
+# Ensure any Gemfile.lock changes ensure a bundle is installed.
 Gemfile.lock.installed: Gemfile.lock
 	bundle install
 	touch Gemfile.lock.installed
@@ -39,17 +41,22 @@ clean: clear_metrics ## remove all built artifacts
 
 test: spec ## run tests quickly
 
-quality: ## run precommit quality checks
+overcommit: ## run precommit quality checks
 	bundle exec overcommit --run
 
+quality: overcommit ## run precommit quality checks
+
 spec: ## Run lower-level tests
-#	@bundle exec rake spec
+	@bundle exec rake spec
 
 feature: ## Run higher-level tests
 	@bundle exec rake feature
 
 localtest: ## run default local actions
 	@bundle exec rake localtest
+
+repl:  ## Load up source_finder in pry
+	@bundle exec rake repl
 
 update_from_cookiecutter: ## Bring in changes from template project used to create this repo
 	bundle exec overcommit --uninstall
