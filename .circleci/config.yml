@@ -37,7 +37,7 @@ commands:
           sed -E -e 's/source_finder \([[:digit:]]+.[[:digit:]]+.[[:digit:]]+\)/source_finder (0.1.0)/g' \
           Gemfile.lock > Gemfile.lock.deversioned
       - restore_cache:
-          key: gems-v4-{{ checksum "Gemfile.lock.deversioned" }}
+          key: gems-v1-{{ checksum "Gemfile.lock.deversioned" }}
       - restore_cache:
           key: wheels-v1-{{ checksum "requirements_dev.txt" }}
       - run:
@@ -54,7 +54,7 @@ commands:
               exit 1
             fi
       - save_cache:
-          key: gems-v4-{{ checksum "Gemfile.lock.deversioned" }}
+          key: gems-v1-{{ checksum "Gemfile.lock.deversioned" }}
           paths:
             - "vendor/bundle"
       - save_cache:
@@ -84,7 +84,7 @@ commands:
 jobs:
   overcommit:
     docker:
-      - image: apiology/circleci:latest
+      - image: apiology/circleci-ruby:latest
     steps:
       - when:
           condition:
@@ -99,7 +99,7 @@ jobs:
   build:
     working_directory: ~/source_finder
     docker:
-      - image: apiology/circleci:latest
+      - image: apiology/circleci-ruby:latest
     steps:
       - set_up_environment
       - run_with_languages:
@@ -110,6 +110,8 @@ jobs:
             git status --porcelain coverage/.last_run.json
             git diff coverage/.last_run.json
             test -z "$(git status --porcelain coverage/.last_run.json)"
+    # This seemed to shave 5ish% of the build time off when added
+    resource_class: large
 
 workflows:
   version: 2
