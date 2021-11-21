@@ -13,11 +13,11 @@ describe SourceFinder::SourceFileGlobber do
   describe '#source_files_glob' do
     subject(:default_source_files_glob) do
       '{Dockerfile,Rakefile,{*,.*}.' \
-      '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
-      'py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,spec,src,' \
-      'test,tests,vars,www}/**/{*,.*}.' \
-      '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
-      'py,rake,rb,scala,sh,swift,yml}}'
+        '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
+        'py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,spec,src,' \
+        'test,tests,vars,www}/**/{*,.*}.' \
+        '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
+        'py,rake,rb,scala,sh,swift,yml}}'
     end
 
     let(:source_dirs) { instance_double(Array) }
@@ -64,11 +64,11 @@ describe SourceFinder::SourceFileGlobber do
 
     let(:source_file_glob) do
       '{Dockerfile,Rakefile,{*,.*}.' \
-      '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
-      'py,rake,rb,scala,sh,swift,' \
-      'yml},{app,config,db,feature,lib,spec,src,test,tests,vars,www}/' \
-      '**/{*,.*}.{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
-      'py,rake,rb,scala,sh,swift,yml}}'
+        '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
+        'py,rake,rb,scala,sh,swift,' \
+        'yml},{app,config,db,feature,lib,spec,src,test,tests,vars,www}/' \
+        '**/{*,.*}.{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
+        'py,rake,rb,scala,sh,swift,yml}}'
     end
 
     before do

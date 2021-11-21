@@ -15,11 +15,11 @@ describe SourceFinder::SourceFileGlobber do
 
     let(:expected_glob) do
       '{Dockerfile,Rakefile,{*,.*}.' \
-      '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,' \
-      'json,md,py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,' \
-      'spec,src,test,tests,vars,www}/**/{*,.*}.' \
-      '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
-      'md,py,rake,rb,scala,sh,swift,yml}}'
+        '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,' \
+        'json,md,py,rake,rb,scala,sh,swift,yml},{app,config,db,feature,lib,' \
+        'spec,src,test,tests,vars,www}/**/{*,.*}.' \
+        '{c,clj,cljs,cpp,gemspec,groovy,html,java,js,json,' \
+        'md,py,rake,rb,scala,sh,swift,yml}}'
     end
 
     context 'when called once' do

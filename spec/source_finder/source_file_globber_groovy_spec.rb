@@ -50,7 +50,7 @@ describe SourceFinder::SourceFileGlobber do
     before do
       allow(globber).to(receive(:glob))
         .with('{{*,.*}.{groovy},{app,src,vars,www}/**/{*,.*}.' \
-                          '{groovy}}')
+              '{groovy}}')
         .and_return(['bing/baz.groovy'])
       allow_exclude_files_found
     end
