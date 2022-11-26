@@ -3,11 +3,14 @@
 SourceFinder's job is to find source files in your project in a configurable way
 --useful for things like static analysis quality tools.
 
-To publish new version as a maintainer:
+## Contributions
 
-```sh
-git log "v$(bump current)..."
-# Set type_of_bump to patch, minor, or major
-bump --tag --tag-prefix=v ${type_of_bump:?}
-rake release
-```
+This project, as with all others, rests on the shoulders of a broad
+ecosystem supported by many volunteers doing thankless work, along
+with specific contributors.
+
+In particular I'd like to call out:
+
+* [Audrey Roy Greenfeld](https://github.com/audreyfeldroy) for the
+  cookiecutter tool and associated examples, which keep my many
+  projects building with shared boilerplate with a minimum of fuss.
